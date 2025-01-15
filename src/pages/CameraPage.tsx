@@ -424,16 +424,10 @@ const Camera: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const storedData = localStorage.getItem("currentValue");
-    if (!storedData) {
+    const cookieData = getCookie("currentValue");
+    if (!cookieData) {
       navigate("/");
       return;
-    }
-
-    const userData = JSON.parse(storedData);
-    if (userData.beforestep === "result") {
-      setImage(userData.image);
-      setImageType(userData.imageType);
     }
   }, [navigate]);
 
