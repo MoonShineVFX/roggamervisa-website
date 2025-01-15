@@ -26,3 +26,5 @@ dist-ssr
 # Mac 系統檔案
 ._*
 .DS_Store
+.env
+.env.local

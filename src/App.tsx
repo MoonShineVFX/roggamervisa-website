@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import "./App.css";
+
+// 導入頁面組件
+import HomePage from "./pages/HomePage";
+import TeamPage from "./pages/TeamPage";
+import CharacterPage from "./pages/CharacterPage";
+import CameraPage from "./pages/CameraPage";
+import FinalPage from "./pages/FinalPage";
+import { AnimatePresence, motion } from "framer-motion";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <AnimatePage>
+              <HomePage />
+            </AnimatePage>
+          }
+        />
+        <Route
+          path="/team"
+          element={
+            <AnimatePage>
+              <TeamPage />
+            </AnimatePage>
+          }
+        />
+        <Route
+          path="/character"
+          element={
+            <AnimatePage>
+              <CharacterPage />
+            </AnimatePage>
+          }
+        />
+        <Route
+          path="/camera"
+          element={
+            <AnimatePage>
+              <CameraPage />
+            </AnimatePage>
+          }
+        />
+        <Route
+          path="/final"
+          element={
+            <AnimatePage>
+              <FinalPage />
+            </AnimatePage>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+const AnimatePage = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div key={location.pathname}>{children}</motion.div>
+    </AnimatePresence>
+  );
+};
+
+export default App;
