@@ -766,7 +766,7 @@ const Final: React.FC = () => {
                           />
                         </div>
 
-                        <div className="font-cachetpro text-[1.4vw] align-middle bg-slate-500/0 pt-[3%] leading-tight flex flex-col   ">
+                        <div className="font-cachetpro text-[5vw] align-middle bg-slate-500/0 pt-[3%] leading-tight flex flex-col   ">
                           <span className="text-white/80">
                             {resultData.title_ch}
                           </span>
@@ -883,39 +883,7 @@ const Final: React.FC = () => {
                             resultData.randomSelect === "2" && "text-[#C7B299]"
                           } font-cachetpro bg-sky-400/0 text-[5vw] underline`}
                         >
-                          Download Gamer Card
-                        </div>
-                      </a>
-                      <a
-                        href={wallpaperdUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={`${
-                          qrUrl && qrUrl.length > 0
-                            ? "hover:scale-95 cursor-pointer  "
-                            : " pointer-events-none grayscale text-zinc-600 cursor-wait "
-                        } transition-all duration-500 flex items-end justify-between bg-fuchsia-100/0 pl-[10%] relative`}
-                      >
-                        <div className=" absolute top-0 left-0 w-[12%]  ">
-                          {qrUrl && qrUrl.length > 0 ? (
-                            <img
-                              className=" absolute  left-0"
-                              src={r2imagesurl + "/images/final_dl_icon.png"}
-                              alt=""
-                            />
-                          ) : (
-                            <div className="absolute top-0 left-0 flex items-center justify-center w-full aspect-square ">
-                              <div className=" w-[4vw]  aspect-square   animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface"></div>
-                            </div>
-                          )}
-                        </div>
-
-                        <div
-                          className={` ${
-                            resultData.randomSelect === "2" && "text-[#C7B299]"
-                          } font-cachetpro bg-sky-400/0 text-[5vw] underline`}
-                        >
-                          Download Wallpaper
+                          Download Qiddiya City VISA
                         </div>
                       </a>
                     </div>

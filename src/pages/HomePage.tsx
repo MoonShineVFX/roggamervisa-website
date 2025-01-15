@@ -238,7 +238,7 @@ const Home = () => {
   // const trans1_container = useRef<HTMLDivElement>(null);
 
   return (
-    <div className=" relative h-[100dvh]">
+    <div className=" relative h-[100dvh] text-white">
       {showFormModal && <Terms closeModal={closeFormModal} />}
       {!isMobile && showAnimation && (
         <TransitionAnimation

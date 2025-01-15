@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { setCookie, getCookie, updateCookie } from "../Helpers/Helper";
 // Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
 
 // import required modules
-import { EffectCoverflow } from "swiper/modules";
 import TransitionAnimation from "../Components/TransitionAnimation";
 import trans1 from "../animationData/trans_01_short.json";
 import trans2 from "../animationData/trans_01_short_reverse.json";
@@ -64,13 +62,12 @@ const buttonData1: ButtonData[] = [
 const Team: React.FC = () => {
   const navigate = useNavigate();
   // const [selectedButton, setSelectedButton] = useState<string | null>(null);
-  const [swiper, setSwiper] = useState<any>(null);
   const [currentId, setCurrentId] = useState<string>("1");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentType, setCurrentType] = useState<string>(
     "type" + (Math.floor(Math.random() * 2) + 1).toString()
   );
-  const [currentMbti, setCurrentMbti] = useState<string>("INTJ");
+  const [currentMbti] = useState<string>("INTJ");
   const [currentLogo, setCurrentLogo] = useState<string>("AkiraLOGO");
   // const [isActive, setIsActive] = useState<boolean>(false);
   // const [bigiconUrl, setBigiconUrl] = useState<string>("");
@@ -84,7 +81,7 @@ const Team: React.FC = () => {
   );
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  const r2url = "https://r2.web.moonshine.tw/msweb/roggamercard/";
+  // const r2url = "https://r2.web.moonshine.tw/msweb/roggamercard/";
   const r2imagesurl = "https://r2.web.moonshine.tw/opt/md/msweb/roggamercard";
   const r2gifurl = "https://r2.web.moonshine.tw/msweb/roggamercard";
 
@@ -107,30 +104,21 @@ const Team: React.FC = () => {
     const cookieData = getCookie("currentValue");
     if (cookieData) {
       const userDataFromCookie = JSON.parse(cookieData);
-      if (userDataFromCookie.beforestep === "camera" && swiper) {
+      if (userDataFromCookie.beforestep === "camera") {
         // console.log(userDataFromCookie.beforestep);
         // console.log(userDataFromCookie.type);
         // console.log(userDataFromCookie.mbti);
         // console.log(userDataFromCookie.currentIndex);
-        swiper.slideToLoop(userDataFromCookie.currentIndex);
         setCurrentType(userDataFromCookie.type);
         // setCurrentType(userDataFromCookie.type)
         // setCurrentMbti(userDataFromCookie.mbti)
       }
     }
-  }, [swiper]);
+  }, []);
 
   // const handleSwitchBtnClick = () => {
   //   setIsActive((prev) => !prev);
   // };
-
-  const handleSwitchType = (type: string): void => {
-    if (type === currentType) {
-      controls.start("start");
-      return;
-    }
-    setCurrentType(type);
-  };
 
   const handlePrev = (): void => {
     setTimeout(() => {
@@ -153,22 +141,22 @@ const Team: React.FC = () => {
 
     return imgs[0];
   }
-  function calculateDistance(current: string, target: string) {
-    // 计算当前数字到目标数字的距离
-    let distance = parseInt(target) - parseInt(current);
+  // function calculateDistance(current: string, target: string) {
+  //   // 计算当前数字到目标数字的距离
+  //   let distance = parseInt(target) - parseInt(current);
 
-    // 如果距离为负数，表示目标数字在当前数字的左侧，需要调整距离
-    if (distance < 0) {
-      distance += 16;
-    }
+  //   // 如果距离为负数，表示目标数字在当前数字的左侧，需要调整距离
+  //   if (distance < 0) {
+  //     distance += 16;
+  //   }
 
-    // 如果距离大于总数的一半，表示目标数字在当前数字的右侧，需要调整距离
-    if (distance > 16 / 2) {
-      distance = 16 - distance;
-    }
+  //   // 如果距离大于总数的一半，表示目标数字在当前数字的右侧，需要调整距离
+  //   if (distance > 16 / 2) {
+  //     distance = 16 - distance;
+  //   }
 
-    return distance;
-  }
+  //   return distance;
+  // }
   const handleClickOutside = (): void => {
     setIsShowHint(false);
   };
@@ -329,12 +317,10 @@ const Team: React.FC = () => {
                 </div>
                 <motion.div
                   key={
-                    r2url +
-                    "templates/character/" +
-                    currentType +
-                    "/" +
-                    currentMbti +
-                    ".png"
+                    IMAGE_URLS.ROG_GAMER_VISA +
+                    "team/logo/" +
+                    currentLogo +
+                    ".svg"
                   }
                   initial={
                     currentType === "type2"
@@ -358,25 +344,25 @@ const Team: React.FC = () => {
                       ? { opacity: 0, x: "10%", scale: 1.4, y: "22%" }
                       : { opacity: 0, x: "-60%", scale: 1.4, y: "22%" }
                   }
-                  className="  absolute z-10 top-0 left-1/2 w-[55dvh]   "
+                  className="  absolute z-10 top-0 left-1/2 w-[24dvh] h-2/3 flex items-center justify-center   "
                 >
                   <motion.img
                     variants={variants}
                     animate={controls}
                     src={
-                      r2url +
-                      "templates/character/" +
-                      currentType +
-                      "/" +
-                      currentMbti +
-                      ".png"
+                      IMAGE_URLS.ROG_GAMER_VISA +
+                      "team/logo/" +
+                      currentLogo +
+                      ".svg"
                     }
                     alt=""
                     className="w-full"
                   />
                 </motion.div>
                 <motion.div
-                  key={r2imagesurl + "/mbti/right/" + currentMbti + ".png"}
+                  key={
+                    IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_b.png"
+                  }
                   initial={{ opacity: 0, y: -100 }}
                   animate={{
                     opacity: 1,
@@ -396,83 +382,15 @@ const Team: React.FC = () => {
                   className=" absolute top-[6%] left-[9%] z-0 w-[17%]"
                 >
                   <motion.img
-                    src={r2imagesurl + "/mbti/right/" + currentMbti + ".png"}
+                    src={
+                      IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_b.png"
+                    }
                     alt="righticon"
                     className="w-full"
                   />
                 </motion.div>
               </AnimatePresence>
               <div className=" fixed top-0 w-full h-[100dvh] z-0 bg-gradient-to-l from-black/80 via-black/10 to-black/80 hidden"></div>
-              <motion.div
-                initial={{ opacity: 0, x: "-50%" }}
-                animate={{ opacity: 1, x: "-50%" }}
-                // exit={{ opacity: 0, y: 0 , x:'-50%'}}
-                transition={{
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 20,
-                  delay: 0.5,
-                }}
-                className="absolute bottom-[15%] left-1/2   w-full flex flex-col justify-center items-center z-[999]"
-              >
-                <div className="font-robotocon text-sm opacity-0">
-                  Selected: {currentType}_{currentMbti}
-                </div>
-                <div className=" flex justify-center items-center w-full space-x-[4%] ">
-                  <div
-                    className={`w-[16%] relative bg-fuchsia-600/0 transition-all duration-500 ${
-                      currentType === "type2"
-                        ? " grayscale "
-                        : "animate-pulse cursor-pointer"
-                    } `}
-                    onClick={() => {
-                      if (currentType === "type1") {
-                        handleSwitchType("type2");
-                      }
-                    }}
-                  >
-                    <img
-                      src={r2imagesurl + "/images/character_left_btn2x.png"}
-                      alt=""
-                    />
-                    <img
-                      src={r2imagesurl + "/images/character_left_btn2x.png"}
-                      alt=""
-                      className={`${
-                        currentType === "type2" && " hidden"
-                      } absolute top-0 left-0 blur-lg`}
-                    />
-                  </div>
-                  <div className="  font-cachetpro text-[5vw] leading-[5vw] text-center -mb-2">
-                    {" "}
-                    <p>SWITCH</p> <p>GENDER</p>
-                  </div>
-                  <div
-                    className={`w-[16%] relative bg-fuchsia-600/0 transition-all duration-500 ${
-                      currentType === "type1"
-                        ? " grayscale "
-                        : "animate-pulse cursor-pointer"
-                    }`}
-                    onClick={() => {
-                      if (currentType === "type2") {
-                        handleSwitchType("type1");
-                      }
-                    }}
-                  >
-                    <img
-                      src={r2imagesurl + "/images/character_right_btn2x.png"}
-                      alt=""
-                    />
-                    <img
-                      src={r2imagesurl + "/images/character_left_btn2x.png"}
-                      alt=""
-                      className={` ${
-                        currentType === "type1" && " hidden"
-                      } absolute top-0 left-0 blur-lg`}
-                    />
-                  </div>
-                </div>
-              </motion.div>
             </div>
             <div className="w-full h-[25dvh] relative ">
               {isShowMbHint && (
@@ -594,126 +512,38 @@ const Team: React.FC = () => {
                   }}
                   className=" bg-green-700/0 w-full h-full  flex items-center mt-[5%]"
                 >
-                  <Swiper
-                    effect={"coverflow"}
-                    modules={[EffectCoverflow]}
-                    // resistance={true} TODO 中間問題
-                    coverflowEffect={{
-                      rotate: 0,
-                      stretch: 5,
-                      depth: 500,
-                      modifier: 1,
-                      slideShadows: false,
-                      scale: 1,
-                    }}
-                    // slideToClickedSlide={true}
-                    grabCursor={true}
-                    centeredSlides={true}
-                    slidesPerView="auto"
-                    spaceBetween={30}
-                    className="mySwiper2 "
-                    onSwiper={setSwiper}
-                    onSlideChange={(e) => {
-                      setCurrentId(String(e.realIndex + 1));
-                      setCurrentIndex(e.realIndex);
-                      setCurrentMbti(buttonData1[e.realIndex].name);
-                      // setBigiconUrl(
-                      //   r2imagesurl + "/mbti/bigicon/" + "INTJ" + ".png"
-                      // );
-                      console.log(e.realIndex);
-                    }}
-                    loop={true}
-                    loopAdditionalSlides={2}
-                  >
+                  <div className=" grid grid-cols-2 gap-4 mx-[8%]">
                     {buttonData1?.map((item, index) => {
-                      // const nextItemId =
-                      //   index < buttonData1.length - 1
-                      //     ? buttonData1[index + 1].id
-                      //     : null;
-                      // const prevItemId =
-                      //   index > 0 ? buttonData1[index - 1].id : null;
                       return (
-                        <SwiperSlide
+                        <div
                           key={"tf" + index}
-                          className={`group relative  ${
-                            currentId === item.id ? "current" : " "
-                          } ${
-                            calculateDistance(currentId, item.id) === 1
-                              ? "current1"
-                              : ""
-                          }  ${
-                            calculateDistance(currentId, item.id) === 2
-                              ? "current2"
-                              : ""
-                          }  ${
-                            calculateDistance(currentId, item.id) === 3
-                              ? "current3"
-                              : ""
-                          } `}
+                          className={`group relative cursor-pointer   `}
+                          onClick={() => {
+                            handleImageClick(index);
+                          }}
                         >
-                          <div
-                            className={` relative transition-all duration-700 ${
+                          <img
+                            src={IMAGE_URLS.ROG_GAMER_VISA + "team/btnbg.png"}
+                            alt=""
+                            className={`w-full  ${
                               currentId === item.id
-                                ? "  brightness-100 "
-                                : " brightness-50 "
-                            } `}
+                                ? "opacity-100"
+                                : "opacity-40"
+                            }`}
+                          />
+                          <div
+                            className={`${
+                              currentId === item.id
+                                ? "[text-shadow:_0px_0px_10px_rgba(255,0,0,0.96)] text-red-500"
+                                : "text-white/40 group-hover:text-white "
+                            }  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/40 font-rog text-[3.7vw] transition-all duration-300 tracking-widest   `}
                           >
-                            <div
-                              className="w-[100%] mx-auto relative"
-                              onClick={() => {
-                                handleImageClick(index);
-                              }}
-                            >
-                              <img
-                                src={item.url + ".svg"}
-                                alt={"slide" + item.id}
-                                className="w-[100%] px-2 -ml-[2px] mx-auto"
-                              />
-                            </div>
+                            {item.name}
                           </div>
-                          {currentId === item.id && (
-                            <motion.span
-                              key={`span_${currentId}`}
-                              initial={{
-                                opacity: 0,
-                                scale: 1.3,
-                                y: "-50%",
-                                x: "-50%",
-                              }}
-                              animate={{
-                                opacity: 1,
-                                scale: 1,
-                                y: "-50%",
-                                x: "-50%",
-                                transition: {
-                                  delay: 0.3,
-                                  type: "spring",
-                                  stiffness: 1200,
-                                  damping: 50,
-                                },
-                              }}
-                              exit={{
-                                opacity: 0,
-                                scale: 1.3,
-                                y: "-50%",
-                                x: "-50%",
-                              }}
-                              className={`z-20 top-1/2 left-1/2  absolute transition-all  bg-zinc-800/0 w-full `}
-                            >
-                              <img
-                                src={
-                                  r2gifurl +
-                                  "/images/mb/character_select_fui.svg"
-                                }
-                                alt=""
-                                className="w-full"
-                              />
-                            </motion.span>
-                          )}
-                        </SwiperSlide>
+                        </div>
                       );
                     })}
-                  </Swiper>
+                  </div>
                 </motion.div>
               </div>
             </div>

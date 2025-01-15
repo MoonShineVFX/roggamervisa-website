@@ -449,7 +449,12 @@ const Character: React.FC = () => {
                   />
                 </motion.div>
                 <motion.div
-                  key={r2imagesurl + "/mbti/right/" + currentMbti + ".png"}
+                  key={
+                    IMAGE_URLS.ROG_GAMER_VISA +
+                    "character/title_en/" +
+                    currentId +
+                    ".png"
+                  }
                   initial={{ opacity: 0, y: -100 }}
                   animate={{
                     opacity: 1,
@@ -469,7 +474,12 @@ const Character: React.FC = () => {
                   className=" absolute top-[6%] left-[9%] z-0 w-[17%]"
                 >
                   <motion.img
-                    src={r2imagesurl + "/mbti/right/" + currentMbti + ".png"}
+                    src={
+                      IMAGE_URLS.ROG_GAMER_VISA +
+                      "character/title_en/" +
+                      currentId +
+                      ".png"
+                    }
                     alt="righticon"
                     className="w-full"
                   />
