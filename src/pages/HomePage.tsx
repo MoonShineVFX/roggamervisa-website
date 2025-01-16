@@ -269,9 +269,9 @@ const Home = () => {
               damping: 20,
               delay: 0,
             }}
-            src={r2imagesurl + "/images/home_rog_logo2.png"}
+            src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/2logo.svg"}
             alt="logo"
-            className="max-w-full w-[15%] fixed top-8 right-8 z-50"
+            className="max-w-full w-[35%] fixed top-2 right-4 z-50"
           />
           <motion.div
             initial={{ opacity: 0, x: -10 }}

@@ -228,6 +228,20 @@ const Team: React.FC = () => {
     };
   }, [isVisible]);
 
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrentImage((prev) =>
+  //       prev === "character_hand_1.svg"
+  //         ? "character_hand_2.svg"
+  //         : "character_hand_1.svg"
+  //     );
+  //   }, 300);
+
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
+
   return (
     <div
       className=" relative h-[100dvh] bg-cov bg-left bg-no-repeat text-white"
@@ -410,16 +424,7 @@ const Team: React.FC = () => {
                       />
                     </div>
                     <div className=" absolute top-0 px-4 py-2">
-                      Please go to the{" "}
-                      <a
-                        href="https://www.16personalities.com"
-                        target="_blank"
-                        className="  underline"
-                      >
-                        MBTI test website{" "}
-                      </a>{" "}
-                      to determine your MBTI personality type before
-                      experiencing our website.
+                      請選擇先前意識比對的結果啟動潛行
                     </div>
                     <div className=" flex gap-4 absolute -bottom-2 w-11/12 left-1/2 -translate-x-1/2 justify-center mx-auto  ">
                       <div onClick={handleClickMbHint}>
@@ -450,6 +455,13 @@ const Team: React.FC = () => {
                     src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/select_team_mb.svg"}
                     alt=""
                   />
+                  <div className=" absolute -top-[7px] -right-12 ">
+                    <img
+                      src={r2gifurl + "/images/mb/character_hint.svg"}
+                      alt=""
+                      onClick={handleClickMbHint}
+                    />
+                  </div>
                 </div>
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -590,7 +602,25 @@ const Team: React.FC = () => {
                   src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/select_team3.svg"}
                   alt=""
                 />
-                <motion.div className="w-[33%] absolute bottom-0 left-0">
+                <motion.div className="w-[33%] absolute bottom-10 left-0">
+                  <motion.img
+                    initial={{ opacity: 0, x: -15 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 20,
+                      delay: 0.5,
+                    }}
+                    className=" cursor-pointer w-[100%]   "
+                    onClick={() => {
+                      setIsShowHint(true);
+                    }}
+                    // onMouseLeave={()=>{setIsShowHint(false)}}
+                    src={r2gifurl + "/images/hint_btn.svg"}
+                    alt=""
+                  />
                   {isShowHint && (
                     <>
                       <motion.div
@@ -603,7 +633,7 @@ const Team: React.FC = () => {
                           damping: 20,
                           delay: 0.1,
                         }}
-                        className="absolute w-[260%]"
+                        className="absolute w-[200%]"
                       >
                         <img
                           src={r2imagesurl + "/images/hint_content_2x.png"}
@@ -611,16 +641,7 @@ const Team: React.FC = () => {
                           className="antialiased"
                         />
                         <div className="py-[5%] px-[6%] text-[0.9vw] absolute top-[18%]  bg-emerald-500/0 font-robotocon text-white/50 font-thin">
-                          Please go to the{" "}
-                          <a
-                            href="https://www.16personalities.com"
-                            target="_blank"
-                            className=" underline"
-                          >
-                            MBTI test website{" "}
-                          </a>{" "}
-                          to determine your MBTI personality type before
-                          experiencing our website.
+                          請選擇先前意識比對的結果啟動潛行
                         </div>
                       </motion.div>
                     </>
