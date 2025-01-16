@@ -269,7 +269,7 @@ const Home = () => {
               damping: 20,
               delay: 0,
             }}
-            src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/2logo.svg"}
+            src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/2logo_2.svg"}
             alt="logo"
             className="max-w-full w-[35%] fixed top-2 right-4 z-50"
           />
@@ -521,7 +521,7 @@ const Home = () => {
             }}
           ></motion.div>
           <img
-            src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/2logo.svg"}
+            src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/2logo_2.svg"}
             alt="logo"
             className="max-w-full w-[14vw] absolute top-2 right-8"
           />

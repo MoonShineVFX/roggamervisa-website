@@ -348,7 +348,7 @@ const Team: React.FC = () => {
                       ? { opacity: 0, x: "10%", scale: 1.4, y: "22%" }
                       : { opacity: 0, x: "-60%", scale: 1.4, y: "22%" }
                   }
-                  className="  absolute z-10 top-0 left-1/2 w-[24dvh] h-2/3 flex items-center justify-center   "
+                  className="  absolute z-10 top-0 left-1/2 w-[29dvh] h-2/3 flex items-center justify-center   "
                 >
                   <motion.img
                     variants={variants}
