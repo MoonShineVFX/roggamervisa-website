@@ -14,8 +14,10 @@ import TransitionAnimation from "../Components/TransitionAnimation";
 import TypewriterTerminal from "../Components/TypewriterTerminal";
 import {
   getCookie,
+  getLocalStorage,
   getUsernameFromCookie,
   updateCookie,
+  updateLocalStorage,
 } from "../Helpers/Helper";
 import { IMAGE_URLS } from "../Helpers/constants";
 
@@ -87,6 +89,7 @@ const Camera: React.FC = () => {
     height: { min: 340 },
   };
   useEffect(() => {
+    if (!cameraC_Container.current) return;
     const cameraC_Instance = lottie.loadAnimation({
       container: cameraC_Container.current!,
       animationData: cameraC,
@@ -99,10 +102,15 @@ const Camera: React.FC = () => {
     };
   }, []);
   useEffect(() => {
-    const cookieData = getCookie("currentValue");
-    if (!cookieData) return;
-    const userDataFromCookie = JSON.parse(cookieData);
-    setResultData(userDataFromCookie);
+    // const cookieData = getCookie("currentValue");
+    const localData = getLocalStorage("currentValue");
+    console.log(localData);
+    if (!localData) {
+      navigate("/");
+      return;
+    }
+    // const userDataFromCookie = JSON.parse(localData);
+    setResultData(localData);
   }, []);
 
   const capture = useCallback(() => {
@@ -232,7 +240,6 @@ const Camera: React.FC = () => {
     onBtnClick();
   };
   //按鈕後開始ai運算 console.log(resultData);
-  console.log(resultData);
   const onBtnClick = async () => {
     let randomSelect = "1";
     let currentType = resultData.type;
@@ -388,7 +395,10 @@ const Camera: React.FC = () => {
 
         if (responseData.finished === 1) {
           // setRenderedResult(responseData);
-          updateCookie("currentValue", {
+          // updateCookie("currentValue", {
+          //   result: responseData.generations[0].img,
+          // });
+          updateLocalStorage("currentValue", {
             result: responseData.generations[0].img,
           });
           // setShowRender(true);

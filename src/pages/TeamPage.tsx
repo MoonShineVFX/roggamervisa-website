@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { setCookie, getCookie, updateCookie } from "../Helpers/Helper";
+import { updateLocalStorage, getLocalStorage } from "../Helpers/Helper";
 // Import Swiper React components
 
 // import required modules
@@ -41,7 +41,7 @@ const buttonData1: ButtonData[] = [
   },
   {
     url: "https://r2.web.moonshine.tw/msweb/roggamercard/mbti/ENTJ",
-    name: "ALICE",
+    name: "ACHT",
     template: "ENTJ",
     title: "MODULE 3",
     subtitle: "Introduction to module three",
@@ -76,9 +76,9 @@ const Team: React.FC = () => {
   const [isShowHint, setIsShowHint] = useState<boolean>(false);
   const [isShowMbHint, setIsShowMbHint] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(true);
-  const [currentImage, setCurrentImage] = useState<string>(
-    "character_hand_1.svg"
-  );
+  // const [currentImage, setCurrentImage] = useState<string>(
+  //   "character_hand_1.svg"
+  // );
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // const r2url = "https://r2.web.moonshine.tw/msweb/roggamercard/";
@@ -101,15 +101,17 @@ const Team: React.FC = () => {
   };
 
   useEffect(() => {
-    const cookieData = getCookie("currentValue");
-    if (cookieData) {
-      const userDataFromCookie = JSON.parse(cookieData);
-      if (userDataFromCookie.beforestep === "camera") {
+    // const cookieData = getCookie("currentValue");
+    const localData = getLocalStorage("currentValue");
+    console.log(localData);
+    if (localData) {
+      // const userDataFromCookie = JSON.parse(localData);
+      if (localData.beforestep === "camera") {
         // console.log(userDataFromCookie.beforestep);
         // console.log(userDataFromCookie.type);
         // console.log(userDataFromCookie.mbti);
         // console.log(userDataFromCookie.currentIndex);
-        setCurrentType(userDataFromCookie.type);
+        setCurrentType(localData.type);
         // setCurrentType(userDataFromCookie.type)
         // setCurrentMbti(userDataFromCookie.mbti)
       }
@@ -124,23 +126,24 @@ const Team: React.FC = () => {
     setTimeout(() => {
       setShowAnimationPrev(true);
     }, 500);
-    updateCookie("currentValue", { beforestep: "team" });
+    // updateCookie("currentValue", { beforestep: "team" });
+    updateLocalStorage("currentValue", { beforestep: "team" });
     navigate("/");
   };
 
-  function randomTwo(): string {
-    const imgs = ["1", "2"];
-    const probabilities = [1.0, 0.0];
-    let sum = 0;
-    const r = Math.random();
+  // function randomTwo(): string {
+  //   const imgs = ["1", "2"];
+  //   const probabilities = [1.0, 0.0];
+  //   let sum = 0;
+  //   const r = Math.random();
 
-    for (let i = 0; i < probabilities.length; i++) {
-      sum += probabilities[i];
-      if (r <= sum) return imgs[i];
-    }
+  //   for (let i = 0; i < probabilities.length; i++) {
+  //     sum += probabilities[i];
+  //     if (r <= sum) return imgs[i];
+  //   }
 
-    return imgs[0];
-  }
+  //   return imgs[0];
+  // }
   // function calculateDistance(current: string, target: string) {
   //   // 计算当前数字到目标数字的距离
   //   let distance = parseInt(target) - parseInt(current);
@@ -172,25 +175,26 @@ const Team: React.FC = () => {
   };
 
   const handleNext = (): void => {
-    const randomSelect = randomTwo();
+    // const randomSelect = randomTwo();
     // const type = "type" + currentType;
-    const mbtiname = buttonData1[currentIndex].name;
+    const teamname = buttonData1[currentIndex].name;
 
-    setCookie(
-      "currentValue",
-      JSON.stringify({
-        type: currentType,
-        beforestep: "team",
-        currentIndex: currentIndex,
-        mbti: mbtiname,
-        template: "",
-        randomSelect: randomSelect,
-        currentLogo: currentLogo,
-        currentTeamName: buttonData1[currentIndex].name,
-      }),
-      1
-    );
-
+    // setCookie(
+    //   "currentValue",
+    //   JSON.stringify({
+    //     beforestep: "team",
+    //     currentIndex: currentIndex,
+    //     currentLogo: currentLogo,
+    //     currentTeamName: teamname,
+    //   }),
+    //   1
+    // );
+    updateLocalStorage("currentValue", {
+      beforestep: "team",
+      currentIndex: currentIndex,
+      currentLogo: currentLogo,
+      currentTeamName: teamname,
+    });
     setTimeout(() => {
       setShowAnimationNext(true);
     }, 500);
@@ -223,20 +227,6 @@ const Team: React.FC = () => {
       clearTimeout(timer1);
     };
   }, [isVisible]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImage((prev) =>
-        prev === "character_hand_1.svg"
-          ? "character_hand_2.svg"
-          : "character_hand_1.svg"
-      );
-    }, 300);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   return (
     <div
@@ -361,7 +351,10 @@ const Team: React.FC = () => {
                 </motion.div>
                 <motion.div
                   key={
-                    IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_b.png"
+                    IMAGE_URLS.ROG_GAMER_VISA +
+                    "team/logo_word/" +
+                    currentId +
+                    "_b.png"
                   }
                   initial={{ opacity: 0, y: -100 }}
                   animate={{
@@ -383,7 +376,10 @@ const Team: React.FC = () => {
                 >
                   <motion.img
                     src={
-                      IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_b.png"
+                      IMAGE_URLS.ROG_GAMER_VISA +
+                      "team/logo_word/" +
+                      currentId +
+                      "_b.png"
                     }
                     alt="righticon"
                     className="w-full"
@@ -449,56 +445,11 @@ const Team: React.FC = () => {
               )}
 
               <div className=" flex flex-col items-center relative">
-                <AnimatePresence>
-                  {false && (
-                    <motion.div
-                      key="hand"
-                      initial={{ opacity: 0 }}
-                      animate={{
-                        opacity: 1,
-                        transition: {
-                          type: "spring",
-                          stiffness: 200,
-                          damping: 20,
-                          delay: 1.5,
-                        },
-                      }}
-                      exit={{ opacity: 0, transition: { delay: 0 } }}
-                      className="bg-black/90 w-full h-full absolute z-10 flex flex-col  justify-center items-center py-[5%] top-0"
-                    >
-                      <div className=" relative h-full bg-fuchsia-400/0 ">
-                        <div className="text-center font-robotocon text-[4vw] text-white/60 ">
-                          Swipe left or right to select your MBTI type
-                        </div>
-                        <div className="relative h-full mt-[1%]">
-                          <img
-                            src={r2imagesurl + "/images/mb/" + currentImage}
-                            alt="Character Hand"
-                            className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                          />
-                          <img
-                            src={r2gifurl + "/images/mb/character_arrow.svg"}
-                            alt="Character "
-                            className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-                          />
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
                 <div className=" flex items-center my-[4%] relative">
                   <img
-                    src={r2gifurl + "/images/mb/character_select_title.svg"}
+                    src={IMAGE_URLS.ROG_GAMER_VISA + "imgs/select_team_mb.svg"}
                     alt=""
                   />
-                  <div className=" absolute -top-[7px] -right-12 ">
-                    <img
-                      src={r2gifurl + "/images/mb/character_hint.svg"}
-                      alt=""
-                      onClick={handleClickMbHint}
-                    />
-                  </div>
                 </div>
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -640,24 +591,6 @@ const Team: React.FC = () => {
                   alt=""
                 />
                 <motion.div className="w-[33%] absolute bottom-0 left-0">
-                  <motion.img
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 20,
-                      delay: 0.5,
-                    }}
-                    className=" cursor-pointer w-[100%]   "
-                    onClick={() => {
-                      setIsShowHint(true);
-                    }}
-                    // onMouseLeave={()=>{setIsShowHint(false)}}
-                    src={r2gifurl + "/images/hint_btn.svg"}
-                    alt=""
-                  />
                   {isShowHint && (
                     <>
                       <motion.div
@@ -844,7 +777,12 @@ const Team: React.FC = () => {
               </motion.div>
 
               <motion.div
-                key={IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_b.png"}
+                key={
+                  IMAGE_URLS.ROG_GAMER_VISA +
+                  "team/logo_word/" +
+                  currentId +
+                  "_b.png"
+                }
                 initial={{ opacity: 0, y: 100 }}
                 animate={{
                   opacity: 1,
@@ -865,14 +803,22 @@ const Team: React.FC = () => {
               >
                 <img
                   src={
-                    IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_b.png"
+                    IMAGE_URLS.ROG_GAMER_VISA +
+                    "team/logo_word/" +
+                    currentId +
+                    "_b.png"
                   }
                   alt="lefticon"
                   className="w-full"
                 />
               </motion.div>
               <motion.div
-                key={IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_w.png"}
+                key={
+                  IMAGE_URLS.ROG_GAMER_VISA +
+                  "team/logo_word/" +
+                  currentId +
+                  "_w.png"
+                }
                 initial={{ opacity: 0, y: -100 }}
                 animate={{
                   opacity: 1,
@@ -893,7 +839,10 @@ const Team: React.FC = () => {
               >
                 <motion.img
                   src={
-                    IMAGE_URLS.ROG_GAMER_VISA + "team/" + currentId + "_w.png"
+                    IMAGE_URLS.ROG_GAMER_VISA +
+                    "team/logo_word/" +
+                    currentId +
+                    "_w.png"
                   }
                   alt="righticon"
                   className="w-full"

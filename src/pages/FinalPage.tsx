@@ -3,11 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 // import { useImage } from "../Helpers/ImageContext";
 import {
-  getCookie,
   getUsernameFromCookie,
   getDescriptionByMbti,
   processImage,
-  processImageToWallpaper,
+  getLocalStorage,
 } from "../Helpers/Helper";
 import { QRCodeSVG } from "qrcode.react";
 import { IMAGE_URLS } from "../Helpers/constants";
@@ -20,6 +19,7 @@ interface ResultData {
   title_ch: string;
   title_en: string;
   currentLogo: string;
+  currentTeamName: string;
 }
 
 const Final: React.FC = () => {
@@ -40,8 +40,9 @@ const Final: React.FC = () => {
     title_ch: "",
     title_en: "",
     currentLogo: "",
+    currentTeamName: "",
   });
-  const [homeCheckData, setHomeCheckData] = useState<Record<string, any>>({});
+  // const [homeCheckData, setHomeCheckData] = useState<Record<string, any>>({});
 
   const [mbtiData, setMbtiData] = useState<Record<string, any>>({});
   // const [showBanner, setShowBanner] = useState<boolean>(false);
@@ -51,9 +52,9 @@ const Final: React.FC = () => {
   // const [isCompressing, setIsCompressing] = useState<boolean>(false);
   const [isProcessed, setIsProcessed] = useState<boolean>(false);
   const [qrUrl, setQrUrl] = useState<string>("");
-  const [wallpaperdUrl, setWallpaperdUrl] = useState<string>("");
-  const [card1Url, setCard1Url] = useState<string>("");
-  const [card2Url, setCard2Url] = useState<string>("");
+  // const [wallpaperdUrl, setWallpaperdUrl] = useState<string>("");
+  // const [card1Url, setCard1Url] = useState<string>("");
+  // const [card2Url, setCard2Url] = useState<string>("");
   const [card3Url, setCard3Url] = useState<string>("");
   // const [printCardUrl,setPrintCardUrl]=useState('')
   // const openFormModal = (): void => setShowFormModal(true);
@@ -109,22 +110,10 @@ const Final: React.FC = () => {
     console.log(title);
     // 四個陣營 名字 下載編號 顏色 白 黃 彩 黑
     const card_info = [
-      { title: "ENFJ", cardtype: "white", fontcolor: "#fff" },
-      { title: "ENFP", cardtype: "white", fontcolor: "#fff" },
-      { title: "ENTJ", cardtype: "black", fontcolor: "#fff" },
-      { title: "ENTP", cardtype: "black", fontcolor: "#fff" },
-      { title: "ESFJ", cardtype: "red", fontcolor: "#ff0000" },
-      { title: "ESFP", cardtype: "gradient", fontcolor: "#fff" },
-      { title: "ESTJ", cardtype: "red", fontcolor: "#ff0000" },
-      { title: "ESTP", cardtype: "gradient", fontcolor: "#fff" },
-      { title: "INFJ", cardtype: "white", fontcolor: "#fff" },
-      { title: "INFP", cardtype: "black", fontcolor: "#fff" },
-      { title: "INTJ", cardtype: "black", fontcolor: "#fff" },
-      { title: "INTP", cardtype: "black", fontcolor: "#fff" },
-      { title: "ISFJ", cardtype: "red", fontcolor: "#ff0000" },
-      { title: "ISFP", cardtype: "gradient", fontcolor: "#fff" },
-      { title: "ISTJ", cardtype: "red", fontcolor: "#ff0000" },
-      { title: "ISTP", cardtype: "gradient", fontcolor: "#fff" },
+      { title: "ACHT", cardtype: "black", fontcolor: "#fff" },
+      { title: "AKIRA", cardtype: "white", fontcolor: "#000" },
+      { title: "HORSEM4N", cardtype: "gradient", fontcolor: "#fff" },
+      { title: "SE7EN", cardtype: "gold", fontcolor: "#000" },
     ];
 
     // 使用 find 方法查找与给定 title 相对应的 cardtype
@@ -179,33 +168,37 @@ const Final: React.FC = () => {
     fontcolor: string;
   }
   const handleDownloadCard = async () => {
-    let card = (await getTitleCardType(resultData.mbti)) as CardData;
+    console.log("DL CARD");
+    let card = (await getTitleCardType(resultData.currentTeamName)) as CardData;
     try {
       // 处理图片
       let gamerNeme = getUsernameFromCookie();
       let imageData;
-      if (card1Url && card1Url.length > 0) {
-        const response = await fetch(card1Url as string);
+      if (card3Url && card3Url.length > 0) {
+        const response = await fetch(card3Url as string);
         imageData = await response.blob();
       } else {
         console.log("DL CARD3");
         const processedImage = await processImage(
           resultData.result,
-          r2url + "templates/border/card3/" + card.cardtype + ".png",
-          638,
-          1016,
-          getUsernameFromCookie() as string,
-          "RobotoCon",
-          "22",
-          card.fontcolor,
-          90,
-          { x: 70, y: 405 },
-          resultData.mbti,
+          IMAGE_URLS.ROG_GAMER_VISA +
+            "team/card/" +
+            resultData.currentTeamName +
+            ".png",
+          661,
+          1047,
+          resultData.title_en,
           "ROGFonts",
-          "45",
+          "20",
+          card.fontcolor,
+          0,
+          { x: 46, y: 1033 },
+          (getUsernameFromCookie() as string) + " NO." + "00999",
+          "ROGFonts",
+          "20",
           card.fontcolor,
           90,
-          { x: 50, y: 280 }
+          { x: 35, y: 270 }
         );
 
         const response = await fetch(processedImage as string);
@@ -218,7 +211,7 @@ const Final: React.FC = () => {
       // 创建一个可下载的链接
       const a = document.createElement("a");
       a.href = imageUrl;
-      a.download = gamerNeme + "_" + resultData.mbti + "_Card.jpg"; // 设置下载文件的名称
+      a.download = gamerNeme + "_" + resultData.currentTeamName + "_Card.jpg"; // 设置下载文件的名称
 
       // 模拟点击下载链接
       a.click();
@@ -233,96 +226,96 @@ const Final: React.FC = () => {
   //處理圖片並產生網址給qrcode
   const processAndGenerateURL = async (
     imageUrl: string,
-    mbtiName: string,
-    randomSelect: string
+    currentTeamName: string
   ) => {
     try {
       //wallpapaer
-      const processedWallpaper = await processImageToWallpaper(
-        imageUrl,
-        "https://r2.web.moonshine.tw/msweb/roggamercard/templates/logos/wallpaperlogo1000_2.png",
-        randomSelect === "2"
-          ? r2imagesurl + "/images/final_sm_win_icon.png"
-          : null
-      );
-      const wallpaperfile = await base64toFileList(
-        processedWallpaper as string
-      );
-      const wallpaperImageUrl = await uploadImageToR2(
-        wallpaperfile[0],
-        "wallpaper_"
-      );
-      setWallpaperdUrl(wallpaperImageUrl);
+      // const processedWallpaper = await processImageToWallpaper(
+      //   imageUrl,
+      //   "https://r2.web.moonshine.tw/msweb/roggamercard/templates/logos/wallpaperlogo1000_2.png",
+      //   randomSelect === "2"
+      //     ? r2imagesurl + "/images/final_sm_win_icon.png"
+      //     : null
+      // );
+      // const wallpaperfile = await base64toFileList(
+      //   processedWallpaper as string
+      // );
+      // const wallpaperImageUrl = await uploadImageToR2(
+      //   wallpaperfile[0],
+      //   "wallpaper_"
+      // );
+      // setWallpaperdUrl(wallpaperImageUrl);
 
-      const card = (await getTitleCardType(mbtiName)) as CardData;
+      let card = (await getTitleCardType(currentTeamName)) as CardData;
 
       //card1
-      const processedCard1 = await processImage(
-        imageUrl,
-        r2url + "templates/border/card1/" + card.cardtype + ".png",
-        1200,
-        1500,
-        getUsernameFromCookie() as string,
-        "RobotoCon",
-        "30",
-        card.fontcolor,
-        90,
-        { x: 120, y: 610 },
-        mbtiName,
-        "ROGFonts",
-        "75",
-        card.fontcolor,
-        90,
-        { x: 95, y: 412 }
-      );
-      const card1file = await base64toFileList(processedCard1 as string);
-      const card1ImageUrl = await uploadImageToR2(card1file[0], "card_");
-      setCard1Url(card1ImageUrl);
+      // const processedCard1 = await processImage(
+      //   imageUrl,
+      //   r2url + "templates/border/card1/" + card.cardtype + ".png",
+      //   1200,
+      //   1500,
+      //   getUsernameFromCookie() as string,
+      //   "RobotoCon",
+      //   "30",
+      //   card.fontcolor,
+      //   90,
+      //   { x: 120, y: 610 },
+      //   mbtiName,
+      //   "ROGFonts",
+      //   "75",
+      //   card.fontcolor,
+      //   90,
+      //   { x: 95, y: 412 }
+      // );
+      // const card1file = await base64toFileList(processedCard1 as string);
+      // const card1ImageUrl = await uploadImageToR2(card1file[0], "card_");
+      // setCard1Url(card1ImageUrl);
       //card2
-      const processedCard2 = await processImage(
-        imageUrl,
-        randomSelect === "2"
-          ? r2url + "templates/border/card2/gold.png"
-          : r2url + "templates/border/card2/" + card.cardtype + ".png",
-        1200,
-        1200,
-        getUsernameFromCookie() as string,
-        "RobotoCon",
-        "30",
-        card.fontcolor,
-        90,
-        { x: 120, y: 500 },
-        mbtiName,
-        "ROGFonts",
-        "55",
-        card.fontcolor,
-        90,
-        { x: 100, y: 333 }
-      );
-      const card2file = await base64toFileList(processedCard2 as string);
-      const card2ImageUrl = await uploadImageToR2(card2file[0], "card2_");
-      setCard2Url(card2ImageUrl);
+      // const processedCard2 = await processImage(
+      //   imageUrl,
+      //   randomSelect === "2"
+      //     ? r2url + "templates/border/card2/gold.png"
+      //     : r2url + "templates/border/card2/" + card.cardtype + ".png",
+      //   1200,
+      //   1200,
+      //   getUsernameFromCookie() as string,
+      //   "RobotoCon",
+      //   "30",
+      //   card.fontcolor,
+      //   90,
+      //   { x: 120, y: 500 },
+      //   mbtiName,
+      //   "ROGFonts",
+      //   "55",
+      //   card.fontcolor,
+      //   90,
+      //   { x: 100, y: 333 }
+      // );
+      // const card2file = await base64toFileList(processedCard2 as string);
+      // const card2ImageUrl = await uploadImageToR2(card2file[0], "card2_");
+      // setCard2Url(card2ImageUrl);
 
       //card3
       const processedCard3 = await processImage(
         imageUrl,
-        randomSelect === "2"
-          ? r2url + "templates/border/card3/gold.png"
-          : r2url + "templates/border/card3/" + card.cardtype + ".png",
-        638,
-        1016,
-        getUsernameFromCookie() as string,
-        "RobotoCon",
-        "22",
-        card.fontcolor,
-        90,
-        { x: 70, y: 405 },
-        mbtiName,
+        IMAGE_URLS.ROG_GAMER_VISA +
+          "team/card/" +
+          resultData.currentTeamName +
+          ".png",
+        661,
+        1047,
+        resultData.title_en,
         "ROGFonts",
-        "45",
+        "20",
+        card.fontcolor,
+        0,
+        { x: 46, y: 1033 },
+        (getUsernameFromCookie() as string) + " NO." + "00999",
+        "ROGFonts",
+        "20",
         card.fontcolor,
         90,
-        { x: 50, y: 280 }
+        { x: 35, y: 270 }
       );
       const card3file = await base64toFileList(processedCard3 as string);
       const card3ImageUrl = await uploadImageToR2(card3file[0], "card3_");
@@ -331,7 +324,7 @@ const Final: React.FC = () => {
 
       setIsProcessed(true);
       // 生成包含处理后的图片数据的URL
-      const generatedURL = `${window.location.origin}/qr?a=${wallpaperImageUrl}&b=${card1ImageUrl}`;
+      const generatedURL = `${window.location.origin}/qr?a=${card3ImageUrl}`;
       setQrUrl(generatedURL);
       console.log("Generated URL:", generatedURL);
 
@@ -401,7 +394,7 @@ const Final: React.FC = () => {
   const handleShare = async () => {
     try {
       // 获取图片数据
-      const response = await fetch(card1Url);
+      const response = await fetch(card3Url);
       if (!response.ok) {
         throw new Error("Failed to fetch image");
       }
@@ -434,7 +427,7 @@ const Final: React.FC = () => {
   const handleShareIg = async () => {
     try {
       // 获取图片数据
-      const response = await fetch(card1Url);
+      const response = await fetch(card3Url);
       if (!response.ok) {
         throw new Error("Failed to fetch image");
       }
@@ -519,34 +512,26 @@ const Final: React.FC = () => {
     };
   }, []);
   useEffect(() => {
-    const cookieData = getCookie("currentValue");
-    const userDataFromCookie = JSON.parse(cookieData as string);
-    setResultData(userDataFromCookie);
+    const localData = getLocalStorage("currentValue");
+    // const userDataFromCookie = JSON.parse(localData as string);
+    setResultData(localData);
 
-    const homeCheckData = getCookie("homeCheck");
-    const homeCheckDataFromCookie = JSON.parse(homeCheckData as string);
-    setHomeCheckData(homeCheckDataFromCookie);
-    setMbtiData(
-      getDescriptionByMbti(userDataFromCookie.mbti) as Record<string, any>
-    );
+    // const homeCheckData = getCookie("homeCheck");
+
+    // const homeCheckDataFromCookie = JSON.parse(homeCheckData as string);
+    // setHomeCheckData(homeCheckDataFromCookie);
+    setMbtiData(getDescriptionByMbti(localData.mbti) as Record<string, any>);
     // console.log(getDescriptionByMbti(userDataFromCookie.mbti))
     if (!isProcessed) {
-      processAndGenerateURL(
-        userDataFromCookie.result,
-        userDataFromCookie.mbti,
-        userDataFromCookie.randomSelect
-      );
+      processAndGenerateURL(localData.result, localData.currentTeamName);
     }
-  }, [isProcessed]);
+  }, [isProcessed, resultData.currentTeamName]);
 
-  const areAllUrlsFilled = () => {
-    return (
-      wallpaperdUrl.length > 0 &&
-      card1Url.length > 0 &&
-      card2Url.length > 0 &&
-      card3Url.length > 0
-    );
-  };
+  // const areAllUrlsFilled = () => {
+  //   return (
+  //     card3Url.length > 0
+  //   );
+  // };
   // const post_swapdata = async () => {
   //   try {
   //     const formData = new FormData();
@@ -584,14 +569,14 @@ const Final: React.FC = () => {
   // useEffect 监听三个 URL 状态的变化
   useEffect(() => {
     // 检查是否所有的 URL 都已经有值
-    if (homeCheckData.agreeCookie && areAllUrlsFilled()) {
-      // 执行上传操作
-      // post_swapdata();
-    } else {
-      console.log(homeCheckData.agreeCookie);
-      console.log("no set Cookie");
-    }
-  }, [wallpaperdUrl, card1Url, card2Url, card3Url, homeCheckData.agreeCookie]); // 在这里定义 useEffect 的依赖项
+    // if (homeCheckData.agreeCookie && areAllUrlsFilled()) {
+    //   // 执行上传操作
+    //   // post_swapdata();
+    // } else {
+    //   // console.log(homeCheckData.agreeCookie);
+    //   // console.log("no set Cookie");
+    // }
+  }, [card3Url]); // 在这里定义 useEffect 的依赖项
 
   if (!resultData) {
     navigate("/");
@@ -1062,9 +1047,7 @@ const Final: React.FC = () => {
               <div className=" absolute top-1/2 -translate-y-1/2 left-0 h-full w-[1px] bg-white/20"></div>
               <div className=" absolute top-1/2 -translate-y-1/2 right-0 h-full w-[1px] bg-white/20"></div>
               <motion.div
-                className={` h-full  w-[70%] bg-purple-500/0 relative pl-10 flex flex-col  ${
-                  resultData.randomSelect === "2" ? "pt-[0%] " : "pt-[3%] "
-                }`}
+                className={` h-full  w-[70%] bg-purple-500/0 relative pl-10 flex flex-col  ${"pt-[3%] "}`}
               >
                 <div className=" absolute top-1/2 -translate-y-1/2 left-0 h-full w-[1px] bg-white/20 hidden"></div>
 

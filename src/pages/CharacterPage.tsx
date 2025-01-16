@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { getCookie, updateCookie } from "../Helpers/Helper";
+import { getLocalStorage, updateLocalStorage } from "../Helpers/Helper";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -197,16 +197,16 @@ const Character: React.FC = () => {
   };
 
   useEffect(() => {
-    const cookieData = getCookie("currentValue");
-    if (cookieData) {
-      const userDataFromCookie = JSON.parse(cookieData);
-      if (userDataFromCookie.beforestep === "camera" && swiper) {
+    const localData = getLocalStorage("currentValue");
+    if (localData) {
+      // const userDataFromCookie = JSON.parse(cookieData);
+      if (localData.beforestep === "camera" && swiper) {
         // console.log(userDataFromCookie.beforestep);
         // console.log(userDataFromCookie.type);
         // console.log(userDataFromCookie.mbti);
         // console.log(userDataFromCookie.currentIndex);
-        swiper.slideToLoop(userDataFromCookie.currentIndex);
-        setCurrentType(userDataFromCookie.type);
+        swiper.slideToLoop(localData.currentIndex);
+        setCurrentType(localData.type);
         // setCurrentType(userDataFromCookie.type)
         // setCurrentMbti(userDataFromCookie.mbti)
       }
@@ -229,7 +229,8 @@ const Character: React.FC = () => {
     setTimeout(() => {
       setShowAnimationPrev(true);
     }, 500);
-    updateCookie("currentValue", { beforestep: "character" });
+    // updateCookie("currentValue", { beforestep: "character" });
+    updateLocalStorage("currentValue", { beforestep: "character" });
     navigate("/team");
   };
 
@@ -266,12 +267,19 @@ const Character: React.FC = () => {
   const handleNext = (): void => {
     // const randomSelect = randomTwo();
     // const type = "type" + currentType;
-    // const mbtiname = buttonData1[currentIndex].name;
+    const mbtiname = buttonData1[currentIndex].name;
     const title_ch = buttonData1[currentIndex].title_ch;
     const title_en = buttonData1[currentIndex].title_en;
-    updateCookie("currentValue", {
+    // updateCookie("currentValue", {
+    //   beforestep: "character",
+    //   mbti: "INTJ",
+    //   title_ch: title_ch,
+    //   title_en: title_en,
+    // });
+    updateLocalStorage("currentValue", {
+      type: currentType,
       beforestep: "character",
-      mbti: "INTJ",
+      mbti: mbtiname,
       title_ch: title_ch,
       title_en: title_en,
     });
@@ -654,16 +662,11 @@ const Character: React.FC = () => {
 
                 <div className=" flex items-center my-[4%] relative">
                   <img
-                    src={r2gifurl + "/images/mb/character_select_title.svg"}
+                    src={
+                      IMAGE_URLS.ROG_GAMER_VISA + "imgs/select_character_mb.svg"
+                    }
                     alt=""
                   />
-                  <div className=" absolute -top-[7px] -right-12 ">
-                    <img
-                      src={r2gifurl + "/images/mb/character_hint.svg"}
-                      alt=""
-                      onClick={handleClickMbHint}
-                    />
-                  </div>
                 </div>
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -898,24 +901,6 @@ const Character: React.FC = () => {
                   alt=""
                 />
                 <motion.div className="w-[33%] absolute bottom-0 left-0">
-                  <motion.img
-                    initial={{ opacity: 0, x: -15 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 20,
-                      delay: 0.5,
-                    }}
-                    className=" cursor-pointer w-[100%]   "
-                    onClick={() => {
-                      setIsShowHint(true);
-                    }}
-                    // onMouseLeave={()=>{setIsShowHint(false)}}
-                    src={r2gifurl + "/images/hint_btn.svg"}
-                    alt=""
-                  />
                   {isShowHint && (
                     <>
                       <motion.div

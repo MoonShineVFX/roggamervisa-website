@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Terms from "../Components/Terms";
 import TransitionAnimation from "../Components/TransitionAnimation";
 import trans1 from "../animationData/trans_01_short.json";
-import { setCookie, setUsernameToCookie } from "../Helpers/Helper";
+import { setLocalStorage, setUsernameToCookie } from "../Helpers/Helper";
 import { IMAGE_URLS } from "../Helpers/constants";
 
 // 定義類型
@@ -70,24 +70,15 @@ const Home = () => {
     setIsAgreeCookie(agreeCookie);
     console.log(item, agreeCookie);
     if (item === "accept") {
-      let objectDate = new Date();
-      let day = String(objectDate.getDate()).padStart(2, "0");
-      let month = String(objectDate.getMonth() + 1).padStart(2, "0");
-      let year = objectDate.getFullYear();
-      let hours = String(objectDate.getHours()).padStart(2, "0");
-      let minutes = String(objectDate.getMinutes()).padStart(2, "0");
-      let checkTime =
-        year + "-" + month + "-" + day + " " + hours + ":" + minutes;
+      // let objectDate = new Date();
+      // let day = String(objectDate.getDate()).padStart(2, "0");
+      // let month = String(objectDate.getMonth() + 1).padStart(2, "0");
+      // let year = objectDate.getFullYear();
+      // let hours = String(objectDate.getHours()).padStart(2, "0");
+      // let minutes = String(objectDate.getMinutes()).padStart(2, "0");
+      // let checkTime =
+      //   year + "-" + month + "-" + day + " " + hours + ":" + minutes;
       setShowFormModal(false);
-      setCookie(
-        "homeCheck",
-        JSON.stringify({
-          agreeCookie: agreeCookie,
-          check_at: checkTime,
-          username: "",
-        }),
-        7
-      );
 
       setIsAccept(true);
     } else {
@@ -182,6 +173,8 @@ const Home = () => {
   const handleClick = async (): Promise<void> => {
     if (username.trim() !== "") {
       setIsSending(true);
+      // setCookie("currentValue", JSON.stringify({ beforestep: "home" }), 7);
+      setLocalStorage("currentValue", JSON.stringify({ beforestep: "home" }));
       if (isAgreeCookie) {
         setUsernameToCookie(username);
         setIsSending(false);

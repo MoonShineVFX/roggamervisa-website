@@ -50,13 +50,86 @@ export const getCookie = (name: string) => {
 
 export const updateCookie = (name: string, newValue: any) => {
   const cookieValue = getCookie(name);
+  console.log(newValue);
   if (cookieValue) {
-    // 解析现有的cookie值
-    const data = JSON.parse(cookieValue);
-    // 添加或更新值
-    Object.assign(data, newValue);
-    // 重新设置cookie
-    setCookie(name, JSON.stringify(data), 1); // 假设setCookie是您之前定义的函数
+    try {
+      // 解析現有的 cookie 值
+      const data = JSON.parse(cookieValue);
+
+      // 使用展開運算符合併數據，保留原有數據
+      const updatedData = {
+        ...data, // 保留原有數據
+        ...newValue, // 添加新數據
+      };
+
+      // 重新設置 cookie
+      setCookie(name, JSON.stringify(updatedData), 1);
+
+      // 添加日誌來追蹤
+      console.log("Updated cookie data:", updatedData);
+      console.log(JSON.stringify(updatedData));
+    } catch (error) {
+      console.error("Cookie update error:", error);
+    }
+  } else {
+    // 如果 cookie 不存在，直接設置新值
+    setCookie(name, JSON.stringify(newValue), 1);
+  }
+};
+
+export const setLocalStorage = (name: string, value: any) => {
+  try {
+    // 確保值被正確地轉換為 JSON 字符串
+    const jsonValue = typeof value === "string" ? value : JSON.stringify(value);
+    localStorage.setItem(name, jsonValue);
+  } catch (error) {
+    console.error("LocalStorage write error:", error);
+  }
+};
+
+export const getLocalStorage = (name: string) => {
+  try {
+    const value = localStorage.getItem(name);
+    // 確保只解析 JSON 字符串
+    return value ? JSON.parse(value) : null;
+  } catch (error) {
+    console.error("LocalStorage read error:", error);
+    return null;
+  }
+};
+
+export const updateLocalStorage = (name: string, newValue: any) => {
+  try {
+    const currentValue = getLocalStorage(name);
+
+    if (currentValue) {
+      // 合併現有數據和新數據
+      const updatedData = {
+        ...currentValue, // 保留原有數據
+        ...newValue, // 添加新數據
+      };
+
+      // 儲存更新後的數據
+      localStorage.setItem(name, JSON.stringify(updatedData));
+
+      // 添加日誌來追蹤
+      console.log("Updated localStorage data:", updatedData);
+      console.log(JSON.stringify(updatedData));
+    } else {
+      // 如果不存在，直接設置新值
+      localStorage.setItem(name, JSON.stringify(newValue));
+    }
+  } catch (error) {
+    console.error("LocalStorage update error:", error);
+  }
+};
+
+// 可選：添加一個刪除函數
+export const removeLocalStorage = (name: string) => {
+  try {
+    localStorage.removeItem(name);
+  } catch (error) {
+    console.error("LocalStorage remove error:", error);
   }
 };
 
@@ -358,13 +431,13 @@ export const processImage = async (
   imageBorderUrl: string,
   customWidth: number,
   customHeight: number,
-  text: string,
+  text: string, //number:new
   font: string,
   fontSize: string,
   textColor: string,
   textRotation: number,
   textPosition: { x: number; y: number },
-  mbti_text: string,
+  mbti_text: string, //gamername:new
   mbti_font: string,
   mbti_fontSize: string,
   mbti_textColor: string,
@@ -433,7 +506,7 @@ export const processImage = async (
           ctx.drawImage(imageBorder, 0, 0); // 绘制边框图片，位置在 (0, 0)
 
           if (text) {
-            ctx.font = `${fontSize}px RobotoConBold`; // 设置字体样式
+            ctx.font = `${fontSize}px ROGFonts`; // 设置字体样式
             ctx.fillStyle = textColor; // 设置文字颜色
             ctx.translate(textPosition.x, textPosition.y); // 设置文字位置
             ctx.rotate((textRotation * Math.PI) / 180); // 设置文字旋转角度
