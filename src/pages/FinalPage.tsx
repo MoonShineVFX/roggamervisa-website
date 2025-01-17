@@ -325,6 +325,7 @@ const Final: React.FC = () => {
     }
   };
   const openInNewTab = (url: string) => {
+    console.log("openInNewTab", url);
     const link = document.createElement("a");
     link.href = url;
     link.target = "_blank";
