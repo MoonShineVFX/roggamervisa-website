@@ -444,7 +444,6 @@ export const processImage = async (
   mbti_textRotation: number,
   mbti_textPosition: { x: number; y: number },
   number_text: string,
-  number_font: string,
   number_fontSize: string,
   number_textColor: string,
   number_textRotation: number,
