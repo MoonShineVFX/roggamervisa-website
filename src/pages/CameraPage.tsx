@@ -434,8 +434,8 @@ const Camera: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const cookieData = getCookie("currentValue");
-    if (!cookieData) {
+    const localData = getLocalStorage("currentValue");
+    if (!localData) {
       navigate("/");
       return;
     }
