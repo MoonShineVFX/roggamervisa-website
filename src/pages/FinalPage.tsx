@@ -878,11 +878,11 @@ const Final: React.FC = () => {
                     <div
                       className={` flex flex-col justify-center items-center gap-10 bg-orange-400/0 w-full `}
                     >
-                      <a
-                        href={card3Url}
-                        target="_blank"
-                        rel="noreferrer"
+                      <div
                         className={"hover:scale-95 cursor-pointer  "}
+                        onClick={() => {
+                          handleDownloadCard();
+                        }}
                       >
                         <div className=" absolute top-0 left-0 w-[12%]  ">
                           <img
@@ -899,7 +899,7 @@ const Final: React.FC = () => {
                         >
                           Download Qiddiya City VISA
                         </div>
-                      </a>
+                      </div>
                     </div>
                   </motion.div>
                 )}
