@@ -269,8 +269,11 @@ const Final: React.FC = () => {
     }
   };
   // handleDownloadCardforMb
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageUrl, setModalImageUrl] = useState("");
   const handleDownloadCardforMb = async () => {
     console.log("DL CARD");
+
     const cardNumber = await getNextCardNumber();
     let card = (await getTitleCardType(resultData.currentTeamName)) as CardData;
     try {
@@ -318,21 +321,35 @@ const Final: React.FC = () => {
       );
       setCard3Url(cardImageUrl);
       setIsProcessing(false);
-      //open cardImageUrl _blank page
-      openInNewTab(cardImageUrl);
+
+      //open cardImageUrl image modal
+      setIsModalOpen(true);
+      setModalImageUrl(cardImageUrl);
     } catch (error) {
       console.error("Error while handling download:", error);
     }
   };
-  const openInNewTab = (url: string) => {
-    console.log("openInNewTab", url);
-    const link = document.createElement("a");
-    link.href = url;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer"; // 安全性考慮
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+
+  const ImageModal = () => {
+    if (!isModalOpen) return null;
+
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="relative bg-white/50 p-2 rounded-lg max-w-[90vw] max-h-[90vh]">
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="absolute top-2 right-2 text-white-500  text-2xl"
+          >
+            ✕
+          </button>
+          <img
+            src={modalImageUrl}
+            alt="Downloaded Card"
+            className="w-full h-auto"
+          />
+        </div>
+      </div>
+    );
   };
 
   //處理圖片並產生網址給qrcode
@@ -697,6 +714,7 @@ const Final: React.FC = () => {
     <div className=" relative h-[100dvh] text-white ">
       {isMobile ? (
         <div className="w-full h-[100dvh] ">
+          <ImageModal />
           {resultData && resultData.randomSelect === "2" && (
             <motion.div
               initial={{ opacity: 0, scale: 1.2, y: -30 }}
