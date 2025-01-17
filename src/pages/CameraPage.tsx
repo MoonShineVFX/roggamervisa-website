@@ -13,7 +13,6 @@ import ScreenProgress from "../Components/ScreenProgress";
 import TransitionAnimation from "../Components/TransitionAnimation";
 import TypewriterTerminal from "../Components/TypewriterTerminal";
 import {
-  getCookie,
   getLocalStorage,
   getUsernameFromCookie,
   updateCookie,
