@@ -319,10 +319,19 @@ const Final: React.FC = () => {
       setCard3Url(cardImageUrl);
       setIsProcessing(false);
       //open cardImageUrl _blank page
-      window.open(cardImageUrl, "_blank");
+      openInNewTab(cardImageUrl);
     } catch (error) {
       console.error("Error while handling download:", error);
     }
+  };
+  const openInNewTab = (url: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer"; // 安全性考慮
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   //處理圖片並產生網址給qrcode
