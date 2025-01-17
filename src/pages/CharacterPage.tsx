@@ -1277,7 +1277,7 @@ const Character: React.FC = () => {
               <motion.div
                 key={
                   IMAGE_URLS.ROG_GAMER_VISA +
-                  "character/title_ch/" +
+                  "character/title_ch2/" +
                   currentId +
                   ".png"
                 }
@@ -1302,7 +1302,7 @@ const Character: React.FC = () => {
                 <img
                   src={
                     IMAGE_URLS.ROG_GAMER_VISA +
-                    "character/title_ch/" +
+                    "character/title_ch2/" +
                     currentId +
                     ".png"
                   }

@@ -274,7 +274,7 @@ const Team: React.FC = () => {
               }')`,
             }}
           >
-            <div className="w-full h-[62dvh] bg-red-400/0  overflow-hidden relative ">
+            <div className="w-full h-[58dvh] bg-red-400/0  overflow-hidden relative ">
               <div className="max-w-full w-[10%] absolute top-14 right-5 bg-slate-400/0 z-10">
                 <img
                   src={r2imagesurl + "/images/mb/character_fui.png"}
@@ -436,14 +436,6 @@ const Team: React.FC = () => {
                           alt=""
                         />
                       </div>
-                      <a href="https://www.16personalities.com" target="_blank">
-                        <img
-                          src={
-                            r2imagesurl + "/images/mb/character_hint_go_btn.png"
-                          }
-                          alt=""
-                        />
-                      </a>
                     </div>
                   </div>
                 </motion.div>
@@ -516,7 +508,7 @@ const Team: React.FC = () => {
                 alt="title"
               />
             </div>
-            <div className="w-full  pt-[7%] h-[15dvh] fixed bottom-0 ">
+            <div className="w-full  pt-[7%] h-[13dvh] fixed bottom-0 ">
               <div className=" flex justify-between w-[60%] mx-auto h-full bg-violet-600/0 relative">
                 <motion.div
                   initial={{ opacity: 0, x: 100 }}

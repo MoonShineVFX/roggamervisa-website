@@ -700,10 +700,7 @@ const Camera: React.FC = () => {
                         <div className="w-[14%] bg-sky-600/0">
                           <img
                             src={
-                              r2imagesurl +
-                              "/mbti/sm_icon/" +
-                              resultData.mbti +
-                              ".png"
+                              r2imagesurl + "/mbti/sm_icon/" + "INTJ" + ".png"
                             }
                             className=""
                             alt=""
@@ -711,10 +708,10 @@ const Camera: React.FC = () => {
                         </div>
 
                         <div className="font-cachetpro text-[1.4vw] align-middle bg-slate-500/0 pt-[3%] leading-tight flex flex-col   ">
-                          <span className="text-white/80">
+                          <span className="text-white">
                             {resultData.title_ch}
                           </span>
-                          <span className="text-white/40">
+                          <span className="text-white">
                             {resultData.title_en}
                           </span>
                         </div>
@@ -728,6 +725,7 @@ const Camera: React.FC = () => {
                             "_word.svg"
                           }
                           alt=""
+                          className="w-[75%]  "
                         />
                       </div>
                     </div>

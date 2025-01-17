@@ -50,7 +50,8 @@ const Final: React.FC = () => {
   // const [showFormModal, setShowFormModal] = useState<boolean>(false);
   const [currentMenu, setCurrentMenu] = useState<string>("image");
   // const [isCompressing, setIsCompressing] = useState<boolean>(false);
-  const [isProcessed, setIsProcessed] = useState<boolean>(false);
+  // const [isProcessed, setIsProcessed] = useState<boolean>(false);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [qrUrl, setQrUrl] = useState<string>("");
   // const [wallpaperdUrl, setWallpaperdUrl] = useState<string>("");
   // const [card1Url, setCard1Url] = useState<string>("");
@@ -160,7 +161,24 @@ const Final: React.FC = () => {
   //     console.error("Error while handling download:", error);
   //   }
   // };
-
+  const getNextCardNumber = async () => {
+    try {
+      const response = await fetch(
+        "https://roggamervisa-api.moonshine-studio.net/next-card-number",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `${import.meta.env.VITE_APITOKEN}`,
+          },
+        }
+      );
+      const { cardNumber } = await response.json();
+      return cardNumber;
+    } catch (error) {
+      console.error("Error getting card number:", error);
+      return "00000";
+    }
+  };
   //下載裁切好的卡片
   interface CardData {
     title: string;
@@ -169,135 +187,15 @@ const Final: React.FC = () => {
   }
   const handleDownloadCard = async () => {
     console.log("DL CARD");
+    const cardNumber = await getNextCardNumber();
     let card = (await getTitleCardType(resultData.currentTeamName)) as CardData;
     try {
       // 处理图片
       let gamerNeme = getUsernameFromCookie();
       let imageData;
-      if (card3Url && card3Url.length > 0) {
-        const response = await fetch(card3Url as string);
-        imageData = await response.blob();
-      } else {
-        console.log("DL CARD3");
-        const processedImage = await processImage(
-          resultData.result,
-          IMAGE_URLS.ROG_GAMER_VISA +
-            "team/card/" +
-            resultData.currentTeamName +
-            ".png",
-          661,
-          1047,
-          resultData.title_en,
-          "ROGFonts",
-          "20",
-          card.fontcolor,
-          0,
-          { x: 46, y: 1033 },
-          (getUsernameFromCookie() as string) + " NO." + "00999",
-          "ROGFonts",
-          "20",
-          card.fontcolor,
-          90,
-          { x: 35, y: 270 }
-        );
-
-        const response = await fetch(processedImage as string);
-        imageData = await response.blob();
-      }
-
-      // 创建一个 URL 对象
-      const imageUrl = URL.createObjectURL(imageData);
-
-      // 创建一个可下载的链接
-      const a = document.createElement("a");
-      a.href = imageUrl;
-      a.download = gamerNeme + "_" + resultData.currentTeamName + "_Card.jpg"; // 设置下载文件的名称
-
-      // 模拟点击下载链接
-      a.click();
-
-      // 释放 URL 对象
-      URL.revokeObjectURL(imageUrl);
-    } catch (error) {
-      console.error("Error while handling download:", error);
-    }
-  };
-
-  //處理圖片並產生網址給qrcode
-  const processAndGenerateURL = async (
-    imageUrl: string,
-    currentTeamName: string
-  ) => {
-    try {
-      //wallpapaer
-      // const processedWallpaper = await processImageToWallpaper(
-      //   imageUrl,
-      //   "https://r2.web.moonshine.tw/msweb/roggamercard/templates/logos/wallpaperlogo1000_2.png",
-      //   randomSelect === "2"
-      //     ? r2imagesurl + "/images/final_sm_win_icon.png"
-      //     : null
-      // );
-      // const wallpaperfile = await base64toFileList(
-      //   processedWallpaper as string
-      // );
-      // const wallpaperImageUrl = await uploadImageToR2(
-      //   wallpaperfile[0],
-      //   "wallpaper_"
-      // );
-      // setWallpaperdUrl(wallpaperImageUrl);
-
-      let card = (await getTitleCardType(currentTeamName)) as CardData;
-
-      //card1
-      // const processedCard1 = await processImage(
-      //   imageUrl,
-      //   r2url + "templates/border/card1/" + card.cardtype + ".png",
-      //   1200,
-      //   1500,
-      //   getUsernameFromCookie() as string,
-      //   "RobotoCon",
-      //   "30",
-      //   card.fontcolor,
-      //   90,
-      //   { x: 120, y: 610 },
-      //   mbtiName,
-      //   "ROGFonts",
-      //   "75",
-      //   card.fontcolor,
-      //   90,
-      //   { x: 95, y: 412 }
-      // );
-      // const card1file = await base64toFileList(processedCard1 as string);
-      // const card1ImageUrl = await uploadImageToR2(card1file[0], "card_");
-      // setCard1Url(card1ImageUrl);
-      //card2
-      // const processedCard2 = await processImage(
-      //   imageUrl,
-      //   randomSelect === "2"
-      //     ? r2url + "templates/border/card2/gold.png"
-      //     : r2url + "templates/border/card2/" + card.cardtype + ".png",
-      //   1200,
-      //   1200,
-      //   getUsernameFromCookie() as string,
-      //   "RobotoCon",
-      //   "30",
-      //   card.fontcolor,
-      //   90,
-      //   { x: 120, y: 500 },
-      //   mbtiName,
-      //   "ROGFonts",
-      //   "55",
-      //   card.fontcolor,
-      //   90,
-      //   { x: 100, y: 333 }
-      // );
-      // const card2file = await base64toFileList(processedCard2 as string);
-      // const card2ImageUrl = await uploadImageToR2(card2file[0], "card2_");
-      // setCard2Url(card2ImageUrl);
-
-      //card3
-      const processedCard3 = await processImage(
-        imageUrl,
+      setIsProcessing(true);
+      const processedImage = await processImage(
+        resultData.result,
         IMAGE_URLS.ROG_GAMER_VISA +
           "team/card/" +
           resultData.currentTeamName +
@@ -310,30 +208,173 @@ const Final: React.FC = () => {
         card.fontcolor,
         0,
         { x: 46, y: 1033 },
-        (getUsernameFromCookie() as string) + " NO." + "00999",
+        (getUsernameFromCookie() as string) + " NO." + cardNumber,
         "ROGFonts",
         "20",
         card.fontcolor,
         90,
         { x: 35, y: 270 }
       );
-      const card3file = await base64toFileList(processedCard3 as string);
-      const card3ImageUrl = await uploadImageToR2(card3file[0], "card3_");
-      // setPrintCardUrl(card3ImageUrl)
-      setCard3Url(card3ImageUrl);
 
-      setIsProcessed(true);
+      const response = await fetch(processedImage as string);
+      imageData = await response.blob();
+
+      // 创建一个 URL 对象
+      const imageUrl = URL.createObjectURL(imageData);
+
+      // 上傳到R2 然後 產生QRCODE
+      const cardfile = await base64toFileList(processedImage as string);
+      const cardImageUrl = await uploadImageToR2(
+        cardfile[0],
+        "NO_" +
+          cardNumber +
+          "_" +
+          gamerNeme +
+          "_" +
+          resultData.currentTeamName +
+          "_card"
+      );
+      setCard3Url(cardImageUrl);
+      setIsProcessing(false);
+
       // 生成包含处理后的图片数据的URL
-      const generatedURL = `${window.location.origin}/qr?a=${card3ImageUrl}`;
+      const generatedURL = `${window.location.origin}/qr?a=${cardImageUrl}`;
       setQrUrl(generatedURL);
       console.log("Generated URL:", generatedURL);
 
-      return generatedURL;
+      // 创建一个可下载的链接
+      const a = document.createElement("a");
+      a.href = imageUrl;
+      a.download =
+        "NO_" +
+        cardNumber +
+        "_" +
+        gamerNeme +
+        "_" +
+        resultData.currentTeamName +
+        "_card.jpg"; // 设置下载文件的名称
+
+      // 模拟点击下载链接
+      a.click();
+
+      // 释放 URL 对象
+      URL.revokeObjectURL(imageUrl);
     } catch (error) {
-      console.error("Error processing image and generating URL:", error);
-      return null;
+      console.error("Error while handling download:", error);
     }
   };
+
+  //處理圖片並產生網址給qrcode
+  // const processAndGenerateURL = async (
+  //   imageUrl: string,
+  //   currentTeamName: string
+  // ) => {
+  //   try {
+  //     //wallpapaer
+  //     // const processedWallpaper = await processImageToWallpaper(
+  //     //   imageUrl,
+  //     //   "https://r2.web.moonshine.tw/msweb/roggamercard/templates/logos/wallpaperlogo1000_2.png",
+  //     //   randomSelect === "2"
+  //     //     ? r2imagesurl + "/images/final_sm_win_icon.png"
+  //     //     : null
+  //     // );
+  //     // const wallpaperfile = await base64toFileList(
+  //     //   processedWallpaper as string
+  //     // );
+  //     // const wallpaperImageUrl = await uploadImageToR2(
+  //     //   wallpaperfile[0],
+  //     //   "wallpaper_"
+  //     // );
+  //     // setWallpaperdUrl(wallpaperImageUrl);
+
+  //     let card = (await getTitleCardType(currentTeamName)) as CardData;
+
+  //     //card1
+  //     // const processedCard1 = await processImage(
+  //     //   imageUrl,
+  //     //   r2url + "templates/border/card1/" + card.cardtype + ".png",
+  //     //   1200,
+  //     //   1500,
+  //     //   getUsernameFromCookie() as string,
+  //     //   "RobotoCon",
+  //     //   "30",
+  //     //   card.fontcolor,
+  //     //   90,
+  //     //   { x: 120, y: 610 },
+  //     //   mbtiName,
+  //     //   "ROGFonts",
+  //     //   "75",
+  //     //   card.fontcolor,
+  //     //   90,
+  //     //   { x: 95, y: 412 }
+  //     // );
+  //     // const card1file = await base64toFileList(processedCard1 as string);
+  //     // const card1ImageUrl = await uploadImageToR2(card1file[0], "card_");
+  //     // setCard1Url(card1ImageUrl);
+  //     //card2
+  //     // const processedCard2 = await processImage(
+  //     //   imageUrl,
+  //     //   randomSelect === "2"
+  //     //     ? r2url + "templates/border/card2/gold.png"
+  //     //     : r2url + "templates/border/card2/" + card.cardtype + ".png",
+  //     //   1200,
+  //     //   1200,
+  //     //   getUsernameFromCookie() as string,
+  //     //   "RobotoCon",
+  //     //   "30",
+  //     //   card.fontcolor,
+  //     //   90,
+  //     //   { x: 120, y: 500 },
+  //     //   mbtiName,
+  //     //   "ROGFonts",
+  //     //   "55",
+  //     //   card.fontcolor,
+  //     //   90,
+  //     //   { x: 100, y: 333 }
+  //     // );
+  //     // const card2file = await base64toFileList(processedCard2 as string);
+  //     // const card2ImageUrl = await uploadImageToR2(card2file[0], "card2_");
+  //     // setCard2Url(card2ImageUrl);
+
+  //     //card3
+  //     const processedCard3 = await processImage(
+  //       imageUrl,
+  //       IMAGE_URLS.ROG_GAMER_VISA +
+  //         "team/card/" +
+  //         resultData.currentTeamName +
+  //         ".png",
+  //       661,
+  //       1047,
+  //       resultData.title_en,
+  //       "ROGFonts",
+  //       "20",
+  //       card.fontcolor,
+  //       0,
+  //       { x: 46, y: 1033 },
+  //       (getUsernameFromCookie() as string) + " NO." + "00999",
+  //       "ROGFonts",
+  //       "20",
+  //       card.fontcolor,
+  //       90,
+  //       { x: 35, y: 270 }
+  //     );
+  //     const card3file = await base64toFileList(processedCard3 as string);
+  //     const card3ImageUrl = await uploadImageToR2(card3file[0], "card3_");
+  //     // setPrintCardUrl(card3ImageUrl)
+  //     setCard3Url(card3ImageUrl);
+
+  //     setIsProcessed(true);
+  //     // 生成包含处理后的图片数据的URL
+  //     const generatedURL = `${window.location.origin}/qr?a=${card3ImageUrl}`;
+  //     setQrUrl(generatedURL);
+  //     console.log("Generated URL:", generatedURL);
+
+  //     return generatedURL;
+  //   } catch (error) {
+  //     console.error("Error processing image and generating URL:", error);
+  //     return null;
+  //   }
+  // };
   //base64轉jpg
   function base64toFileList(base64String: string) {
     const byteCharacters = atob(base64String.split(",")[1]);
@@ -522,10 +563,10 @@ const Final: React.FC = () => {
     // setHomeCheckData(homeCheckDataFromCookie);
     setMbtiData(getDescriptionByMbti(localData.mbti) as Record<string, any>);
     // console.log(getDescriptionByMbti(userDataFromCookie.mbti))
-    if (!isProcessed) {
-      processAndGenerateURL(localData.result, localData.currentTeamName);
-    }
-  }, [isProcessed, resultData.currentTeamName]);
+    // if (!isProcessed) {
+    // processAndGenerateURL(localData.result, localData.currentTeamName);
+    // }
+  }, [resultData.currentTeamName]);
 
   // const areAllUrlsFilled = () => {
   //   return (
@@ -741,10 +782,7 @@ const Final: React.FC = () => {
                         <div className="w-[10%]">
                           <img
                             src={
-                              r2imagesurl +
-                              "/mbti/sm_icon/" +
-                              resultData.mbti +
-                              ".png"
+                              r2imagesurl + "/mbti/sm_icon/" + "INTJ" + ".png"
                             }
                             className=""
                             alt=""
@@ -752,15 +790,15 @@ const Final: React.FC = () => {
                         </div>
 
                         <div className="font-cachetpro text-[5vw] align-middle bg-slate-500/0 pt-[3%] leading-tight flex flex-col   ">
-                          <span className="text-white/80">
+                          <span className="text-white">
                             {resultData.title_ch}
                           </span>
-                          <span className="text-white/40">
+                          <span className="text-white">
                             {resultData.title_en}
                           </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
                         <div className=" font-cachetpro text-[5vw] font-semibold  ">
                           Gamer name:
                         </div>
@@ -777,6 +815,7 @@ const Final: React.FC = () => {
                             "_word.svg"
                           }
                           alt=""
+                          className="h-[23dvh]  mx-auto"
                         />
                       </div>
                       <div className="mt-[10%]">
@@ -843,24 +882,14 @@ const Final: React.FC = () => {
                         href={card3Url}
                         target="_blank"
                         rel="noreferrer"
-                        className={`${
-                          qrUrl && qrUrl.length > 0
-                            ? "hover:scale-95 cursor-pointer  "
-                            : " pointer-events-none grayscale text-zinc-600  cursor-wait "
-                        }  transition-all duration-500 flex items-end justify-between  bg-fuchsia-100/0 pl-[10%] relative`}
+                        className={"hover:scale-95 cursor-pointer  "}
                       >
                         <div className=" absolute top-0 left-0 w-[12%]  ">
-                          {qrUrl && qrUrl.length > 0 ? (
-                            <img
-                              className=" absolute -top-1 left-0"
-                              src={r2imagesurl + "/images/final_dl_icon.png"}
-                              alt=""
-                            />
-                          ) : (
-                            <div className="absolute top-0 left-0 flex items-center justify-center w-full aspect-square ">
-                              <div className=" w-[4vw]  aspect-square   animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface"></div>
-                            </div>
-                          )}
+                          <img
+                            className=" absolute -top-1 left-0"
+                            src={r2imagesurl + "/images/final_dl_icon.png"}
+                            alt=""
+                          />
                         </div>
 
                         <div
@@ -1101,22 +1130,17 @@ const Final: React.FC = () => {
                     >
                       <div className="w-[15%]">
                         <img
-                          src={
-                            r2imagesurl +
-                            "/mbti/sm_icon/" +
-                            resultData.mbti +
-                            ".png"
-                          }
+                          src={r2imagesurl + "/mbti/sm_icon/" + "INTJ" + ".png"}
                           className=""
                           alt=""
                         />
                       </div>
 
                       <div className="font-cachetpro text-[1.4vw] align-middle bg-slate-500/0 pt-[3%] leading-tight flex flex-col   ">
-                        <span className="text-white/80">
+                        <span className="text-white">
                           {resultData.title_ch}
                         </span>
-                        <span className="text-white/80">
+                        <span className="text-white">
                           {resultData.title_en}
                         </span>
                       </div>
@@ -1132,7 +1156,7 @@ const Final: React.FC = () => {
                           "_word.svg"
                         }
                         alt=""
-                        className="w-full"
+                        className="w-[70%]"
                       />
                     </div>
                   </div>
@@ -1285,28 +1309,18 @@ const Final: React.FC = () => {
                   )}
 
                   <div
-                    className={` flex items-end justify-between w-[90%] pl-[12%] relative transition-all duration-500  ${
-                      qrUrl && qrUrl.length > 0
-                        ? "hover:scale-95 cursor-pointer  "
-                        : " grayscale brightness-50 cursor-wait "
-                    }`}
+                    className={` flex items-end justify-between w-[90%] pl-[12%] relative transition-all duration-500  ${"hover:scale-95 cursor-pointer  "}`}
                   >
                     <div className=" absolute -top-1 left-0 w-[11%]  ">
-                      {qrUrl && qrUrl.length > 0 ? (
-                        <img
-                          className=" w-full"
-                          src={
-                            resultData.randomSelect === "2"
-                              ? r2gifurl + "/images/final_dl_gold_icon.svg"
-                              : r2gifurl + "/images/final_dl_icon.svg"
-                          }
-                          alt=""
-                        />
-                      ) : (
-                        <div className="absolute top-0 left-0 flex items-center justify-center w-full aspect-square ">
-                          <div className=" w-[1vw]  aspect-square   animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface"></div>
-                        </div>
-                      )}
+                      <img
+                        className=" w-full"
+                        src={
+                          resultData.randomSelect === "2"
+                            ? r2gifurl + "/images/final_dl_gold_icon.svg"
+                            : r2gifurl + "/images/final_dl_icon.svg"
+                        }
+                        alt=""
+                      />
                     </div>
                     <div
                       className={` font-cachetpro bg-contain  w-[100%] bg-no-repeat bg-right-bottom bg-sky-400/0 text-[1.2vw]`}
@@ -1316,9 +1330,7 @@ const Final: React.FC = () => {
                         }')`,
                       }}
                       onClick={() => {
-                        if (qrUrl && qrUrl.length > 0) {
-                          handleDownloadCard();
-                        }
+                        handleDownloadCard();
                       }}
                     >
                       Download Qiddiya City VISA
@@ -1356,18 +1368,27 @@ const Final: React.FC = () => {
                 <div className="mt-[2%] text-right  ml-auto relative pr-[8%] border-r border-white/50 w-[50%]  ">
                   <div className=" relative  p-4 bg-[#D9D9D950] rounded-md ">
                     <div className="  ">
-                      {qrUrl && qrUrl.length > 0 ? (
-                        <QRCodeSVG
-                          value={qrUrl}
-                          size={100}
-                          bgColor={"#ffffff"}
-                          fgColor={"#000000"}
-                          level={"L"}
-                          includeMargin={true}
-                        />
-                      ) : (
+                      {/* if qrUrl.length< 0 顯示 "waiting for processing" , if isProcessing 顯示 spinner if qrUrl.length > 0 顯示QRCODE */}
+                      {isProcessing ? (
                         <div className="w-full aspect-square flex justify-center items-center">
                           <div className="inline-block w-[1.4vw] aspect-square animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface"></div>
+                        </div>
+                      ) : qrUrl && qrUrl.length > 0 ? (
+                        <div className="w-full aspect-square flex justify-center items-center">
+                          <QRCodeSVG
+                            value={qrUrl}
+                            size={100}
+                            bgColor={"#ffffff"}
+                            fgColor={"#000000"}
+                            level={"L"}
+                            includeMargin={true}
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-full aspect-square flex justify-center items-center">
+                          <div className="text-[1.2vw] text-white/50">
+                            Waiting for processing
+                          </div>
                         </div>
                       )}
                     </div>
