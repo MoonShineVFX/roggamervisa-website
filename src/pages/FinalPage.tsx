@@ -208,12 +208,18 @@ const Final: React.FC = () => {
         card.fontcolor,
         0,
         { x: 46, y: 1033 },
-        (getUsernameFromCookie() as string) + " NO." + cardNumber,
+        getUsernameFromCookie() as string,
         "ROGFonts",
         "20",
         card.fontcolor,
         90,
-        { x: 35, y: 270 }
+        { x: 35, y: 170 },
+        " NO." + cardNumber,
+        "ROGFonts",
+        "20",
+        card.fontcolor,
+        90,
+        { x: 35, y: 536 }
       );
 
       const response = await fetch(processedImage as string);
@@ -259,6 +265,63 @@ const Final: React.FC = () => {
 
       // 释放 URL 对象
       URL.revokeObjectURL(imageUrl);
+    } catch (error) {
+      console.error("Error while handling download:", error);
+    }
+  };
+  // handleDownloadCardforMb
+  const handleDownloadCardforMb = async () => {
+    console.log("DL CARD");
+    const cardNumber = await getNextCardNumber();
+    let card = (await getTitleCardType(resultData.currentTeamName)) as CardData;
+    try {
+      // 处理图片
+      let gamerNeme = getUsernameFromCookie();
+      setIsProcessing(true);
+      const processedImage = await processImage(
+        resultData.result,
+        IMAGE_URLS.ROG_GAMER_VISA +
+          "team/card/" +
+          resultData.currentTeamName +
+          ".png",
+        661,
+        1047,
+        resultData.title_en,
+        "ROGFonts",
+        "20",
+        card.fontcolor,
+        0,
+        { x: 46, y: 1033 },
+        (getUsernameFromCookie() as string) + " NO." + cardNumber,
+        "ROGFonts",
+        "20",
+        card.fontcolor,
+        90,
+        { x: 35, y: 270 },
+        " NO." + cardNumber,
+        "ROGFonts",
+        "20",
+        card.fontcolor,
+        90,
+        { x: 35, y: 536 }
+      );
+
+      // 上傳到R2 然後 產生QRCODE
+      const cardfile = await base64toFileList(processedImage as string);
+      const cardImageUrl = await uploadImageToR2(
+        cardfile[0],
+        "NO_" +
+          cardNumber +
+          "_" +
+          gamerNeme +
+          "_" +
+          resultData.currentTeamName +
+          "_card"
+      );
+      setCard3Url(cardImageUrl);
+      setIsProcessing(false);
+      //open cardImageUrl _blank page
+      window.open(cardImageUrl, "_blank");
     } catch (error) {
       console.error("Error while handling download:", error);
     }
@@ -878,28 +941,43 @@ const Final: React.FC = () => {
                     <div
                       className={` flex flex-col justify-center items-center gap-10 bg-orange-400/0 w-full `}
                     >
-                      <div
-                        className={"hover:scale-95 cursor-pointer  "}
+                      <button
+                        className={
+                          "hover:scale-95 cursor-pointer flex items-center justify-start gap-2  "
+                        }
                         onClick={() => {
-                          handleDownloadCard();
+                          handleDownloadCardforMb();
                         }}
                       >
-                        <div className=" absolute top-0 left-0 w-[12%]  ">
-                          <img
-                            className=" absolute -top-1 left-0"
-                            src={r2imagesurl + "/images/final_dl_icon.png"}
-                            alt=""
-                          />
+                        <div className="w-auto ">
+                          {isProcessing ? (
+                            <div className="w-full aspect-square flex justify-center items-center">
+                              <div className="inline-block w-[8vw] aspect-square animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface"></div>
+                            </div>
+                          ) : (
+                            <div className="   ">
+                              <img
+                                className="  -top-1 left-0"
+                                src={r2imagesurl + "/images/final_dl_icon.png"}
+                                alt=""
+                              />
+                            </div>
+                          )}
                         </div>
 
                         <div
-                          className={` ${
-                            resultData.randomSelect === "2" && "text-[#C7B299]"
-                          } font-cachetpro bg-sky-400/0 text-[5vw] underline`}
+                          className={`  font-cachetpro bg-sky-400/0 text-[5vw] flex flex-col justify-start items-start  `}
                         >
-                          Download Qiddiya City VISA
+                          <div className="underline">
+                            Download Qiddiya City VISA
+                          </div>
+                          {isProcessing && (
+                            <div className="text-sm text-white/30">
+                              Waiting for download..
+                            </div>
+                          )}
                         </div>
-                      </div>
+                      </button>
                     </div>
                   </motion.div>
                 )}
@@ -1385,8 +1463,8 @@ const Final: React.FC = () => {
                           />
                         </div>
                       ) : (
-                        <div className="w-full aspect-square flex justify-center items-center">
-                          <div className="text-[1.2vw] text-white/50">
+                        <div className="w-full aspect-square flex justify-center items-end font-cachetpro">
+                          <div className="text-[1vw] text-white/50 mx-auto">
                             Waiting for processing
                           </div>
                         </div>

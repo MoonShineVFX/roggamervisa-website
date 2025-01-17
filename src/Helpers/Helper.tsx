@@ -442,7 +442,13 @@ export const processImage = async (
   mbti_fontSize: string,
   mbti_textColor: string,
   mbti_textRotation: number,
-  mbti_textPosition: { x: number; y: number }
+  mbti_textPosition: { x: number; y: number },
+  number_text: string,
+  number_font: string,
+  number_fontSize: string,
+  number_textColor: string,
+  number_textRotation: number,
+  number_textPosition: { x: number; y: number }
 ) => {
   return new Promise((resolve, reject) => {
     // 创建一个 Image 元素
@@ -518,7 +524,6 @@ export const processImage = async (
 
           if (mbti_text) {
             ctx.font = `${mbti_fontSize}px ROGFonts`; // 设置字体样式
-            ctx.textAlign = "center";
             ctx.fillStyle = mbti_textColor; // 设置文字颜色
             ctx.translate(mbti_textPosition.x, mbti_textPosition.y); // 设置文字位置
             ctx.rotate((mbti_textRotation * Math.PI) / 180); // 设置文字旋转角度
@@ -526,6 +531,17 @@ export const processImage = async (
             ctx.fillText(ctext, 0, 0); // 绘制文字
             ctx.rotate((-mbti_textRotation * Math.PI) / 180); // 恢复画布角度
             ctx.translate(-mbti_textPosition.x, -mbti_textPosition.y); // 恢复画布位置
+          }
+
+          if (number_text) {
+            ctx.font = `${number_fontSize}px ROGFonts`; // 设置字体样式
+            ctx.fillStyle = number_textColor; // 设置文字颜色
+            ctx.translate(number_textPosition.x, number_textPosition.y); // 设置文字位置
+            ctx.rotate((number_textRotation * Math.PI) / 180); // 设置文字旋转角度
+            var ntext = number_text.split("").join(String.fromCharCode(8202));
+            ctx.fillText(ntext, 0, 0); // 绘制文字
+            ctx.rotate((-number_textRotation * Math.PI) / 180); // 恢复画布角度
+            ctx.translate(-number_textPosition.x, -number_textPosition.y); // 恢复画布位置
           }
 
           // 将 Canvas 中的内容转换为 base64 编码的数据
