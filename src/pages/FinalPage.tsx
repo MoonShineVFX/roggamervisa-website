@@ -522,12 +522,29 @@ const Final: React.FC = () => {
 
   const handleShare = async () => {
     try {
+      if (!card3Url) {
+        throw new Error("Image URL is missing");
+      }
+
       // 获取图片数据
       const response = await fetch(card3Url);
       if (!response.ok) {
-        throw new Error("Failed to fetch image");
+        throw new Error(`Failed to fetch image: ${response.statusText}`);
       }
-      const blob = await response.blob(); // 将响应数据转换为 Blob
+
+      const blob = await response.blob();
+
+      // 檢查圖片大小 (10MB 限制)
+      if (blob.size > 10 * 1024 * 1024) {
+        // 10MB
+        throw new Error("Image is too large to share");
+      }
+
+      // 檢查支援的 MIME 類型
+      const supportedTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!supportedTypes.includes(blob.type)) {
+        throw new Error(`Unsupported image type: ${blob.type}`);
+      }
 
       // 创建分享数据
       const shareData = {
@@ -540,15 +557,20 @@ const Final: React.FC = () => {
         text: "Check out this image!",
       };
 
-      // 执行分享
+      // 執行分享
       if (navigator.share) {
         await navigator.share(shareData);
         console.log("Image shared successfully");
+        // 這裡可以觸發分享成功的 UI 更新
       } else {
-        throw new Error("Web Share API not supported");
+        // 提供 fallback 方案
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
+        console.warn("Web Share API not supported, opened image in new tab");
       }
     } catch (error) {
       console.error("Error sharing image:", error);
+      // 這裡可以觸發錯誤處理的 UI 更新
     }
   };
 
