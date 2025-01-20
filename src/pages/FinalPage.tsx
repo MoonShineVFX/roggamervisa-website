@@ -1030,26 +1030,30 @@ const Final: React.FC = () => {
                     >
                       <div className="flex gap-[16%] mt-[7%] w-full justify-center ">
                         {/* <div className=' flex items-center w-[12%] aspect-square' onClick={handleShare}><img src={r2imagesurl+'/images/ig.svg'} alt="" className='w-full ' /></div> */}
-                        <div
-                          className=" flex items-center w-[10%] aspect-square"
-                          onClick={handleShareX}
-                        >
-                          <img
-                            src={r2gifurl + "/images/twitter.svg"}
-                            alt=""
-                            className="w-full"
-                          />
-                        </div>
-                        <div
-                          className=" flex items-center w-[6%] aspect-square"
-                          onClick={handleShare}
-                        >
-                          <img
-                            src={r2gifurl + "/images/fb.svg"}
-                            alt=""
-                            className="w-full"
-                          />
-                        </div>
+                        {card3Url && (
+                          <div
+                            className=" flex items-center w-[10%] aspect-square"
+                            onClick={handleShareX}
+                          >
+                            <img
+                              src={r2gifurl + "/images/twitter.svg"}
+                              alt=""
+                              className="w-full"
+                            />
+                          </div>
+                        )}
+                        {card3Url && (
+                          <div
+                            className=" flex items-center w-[6%] aspect-square"
+                            onClick={handleShare}
+                          >
+                            <img
+                              src={r2gifurl + "/images/fb.svg"}
+                              alt=""
+                              className="w-full"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </motion.div>
