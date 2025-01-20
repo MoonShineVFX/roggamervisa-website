@@ -558,7 +558,6 @@ const Final: React.FC = () => {
       };
 
       // 檢查是否為 Android 裝置
-      const isAndroid = /Android/i.test(navigator.userAgent);
 
       // 執行分享
       if (navigator.share) {
