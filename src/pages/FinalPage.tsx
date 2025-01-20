@@ -557,16 +557,37 @@ const Final: React.FC = () => {
         text: "Check out this image!",
       };
 
+      // 檢查是否為 Android 裝置
+      const isAndroid = /Android/i.test(navigator.userAgent);
+
       // 執行分享
       if (navigator.share) {
-        await navigator.share(shareData);
-        console.log("Image shared successfully");
-        // 這裡可以觸發分享成功的 UI 更新
+        try {
+          await navigator.share(shareData);
+          console.log("Image shared successfully");
+        } catch (error) {
+          // 如果分享失敗，改用下載方式
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "image.jpg";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          console.log("Share failed, image downloaded instead");
+        }
       } else {
-        // 提供 fallback 方案
+        // 不支援 Web Share API 的裝置
         const url = URL.createObjectURL(blob);
-        window.open(url, "_blank");
-        console.warn("Web Share API not supported, opened image in new tab");
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "image.jpg";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        console.log("Web Share API not supported, image downloaded");
       }
     } catch (error) {
       console.error("Error sharing image:", error);
