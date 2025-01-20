@@ -1022,13 +1022,13 @@ const Final: React.FC = () => {
                     className="w-full bg-slate-700/0 px-[10%]  flex items-center h-full"
                   >
                     <div
-                      className={` flex flex-col justify-center items-center  bg-orange-400/0 w-full ${
+                      className={` flex flex-col justify-center items-center   w-full ${
                         resultData.randomSelect === "2"
                           ? "brightness-[60%] sepia-[100%] saturate-[1]  opacity-100 "
                           : "opacity-80 brightness-100 "
                       } `}
                     >
-                      <div className="flex gap-[16%] mt-[7%] w-full justify-center ">
+                      <div className="flex gap-[16%] mt-[4%] w-full justify-center ">
                         {/* <div className=' flex items-center w-[12%] aspect-square' onClick={handleShare}><img src={r2imagesurl+'/images/ig.svg'} alt="" className='w-full ' /></div> */}
                         {card3Url && card3Url.length > 0 && (
                           <div
