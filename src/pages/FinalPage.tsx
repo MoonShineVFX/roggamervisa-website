@@ -197,17 +197,17 @@ const Final: React.FC = () => {
       const processedImage = await processImage(
         resultData.result,
         IMAGE_URLS.ROG_GAMER_VISA +
-          "team/card/" +
+          "team/card2/" +
           resultData.currentTeamName +
           ".png",
         661,
-        1047,
+        1029,
         resultData.title_en,
         "ROGFonts",
         "20",
         card.fontcolor,
         0,
-        { x: 46, y: 1033 },
+        { x: 46, y: 1010 },
         getUsernameFromCookie() as string,
         "ROGFonts",
         "20",
@@ -283,17 +283,17 @@ const Final: React.FC = () => {
       const processedImage = await processImage(
         resultData.result,
         IMAGE_URLS.ROG_GAMER_VISA +
-          "team/card/" +
+          "team/card2/" +
           resultData.currentTeamName +
           ".png",
         661,
-        1047,
+        1029,
         resultData.title_en,
         "ROGFonts",
         "20",
         card.fontcolor,
         0,
-        { x: 46, y: 1033 },
+        { x: 46, y: 1010 },
         getUsernameFromCookie() as string,
         "ROGFonts",
         "20",
