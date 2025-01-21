@@ -67,7 +67,7 @@ const Team: React.FC = () => {
   const [currentType, setCurrentType] = useState<string>(
     "type" + (Math.floor(Math.random() * 2) + 1).toString()
   );
-  const [currentMbti] = useState<string>("INTJ");
+  // const [currentMbti] = useState<string>("INTJ");
   const [currentLogo, setCurrentLogo] = useState<string>("AkiraLOGO");
   // const [isActive, setIsActive] = useState<boolean>(false);
   // const [bigiconUrl, setBigiconUrl] = useState<string>("");
@@ -283,6 +283,24 @@ const Team: React.FC = () => {
               </div>
               <AnimatePresence initial={true}>
                 <motion.div
+                  key={currentLogo}
+                  initial={{ opacity: 0, x: "-20%", scale: 1.5, y: "-30%" }}
+                  animate={{
+                    opacity: 1,
+                    x: "-20%",
+                    scale: 1.5,
+                    y: "0%",
+                    transition: {
+                      delay: 0.3,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 50,
+                    },
+                  }}
+                  exit={{ opacity: 0, x: "-20%", scale: 1.5, y: "90%" }}
+                  className="  absolute z-10 top-[30%] w-[60vh] left-1/4 h-1/2 flex items-center justify-center rounded-full  bg-gradient-to-t from-[#44308F60] via-[#44308F] to-[#44308F30]  blur-2xl  "
+                ></motion.div>
+                {/* <motion.div
                   key={r2imagesurl + "/mbti/bigicon/" + currentMbti + ".png"}
                   initial={{ opacity: 0, rotate: -40, x: "-55%", y: "-10%" }}
                   animate={{
@@ -311,7 +329,7 @@ const Team: React.FC = () => {
                     alt="bigicon"
                     className="w-full"
                   />
-                </motion.div>
+                </motion.div> */}
                 <div className=" absolute mix-blend-multiply z-20 w-full top-0 left-0 h-[100dvh] ">
                   <img
                     src={r2imagesurl + "/images/mb/character_mask.png"}
@@ -722,7 +740,7 @@ const Team: React.FC = () => {
                 },
               }}
               exit={{ opacity: 0, x: "-20%", scale: 1.5, y: "90%" }}
-              className="  absolute z-10 top-0 w-[40vh] left-1/4 h-full flex items-center justify-center bg-red-600/40  blur-2xl  "
+              className="  absolute z-10 top-[30%] w-[50vh] left-1/4 h-1/2 flex items-center justify-center  bg-gradient-to-t from-[#44308F60] via-[#44308F] to-[#44308F30]  blur-2xl  "
             ></motion.div>
             <AnimatePresence initial={true}>
               <motion.div
@@ -758,7 +776,7 @@ const Team: React.FC = () => {
               </motion.div>
             </AnimatePresence>
             <AnimatePresence initial={true}>
-              <motion.div
+              {/* <motion.div
                 key={r2imagesurl + "/mbti/bigicon/" + currentMbti + ".png"}
                 initial={{ opacity: 0, rotate: -40, x: 0, y: 20 }}
                 animate={{
@@ -787,7 +805,7 @@ const Team: React.FC = () => {
                   alt="bigicon"
                   className="w-full"
                 />
-              </motion.div>
+              </motion.div> */}
 
               <motion.div
                 key={

@@ -401,6 +401,24 @@ const Character: React.FC = () => {
                     className="w-full"
                   />
                 </motion.div>
+                <motion.div
+                  key={r2imagesurl + "/mbti/gradient/" + currentMbti + ".png"}
+                  initial={{ opacity: 0, x: "-20%", scale: 1.5, y: "-30%" }}
+                  animate={{
+                    opacity: 0.9,
+                    x: "-20%",
+                    scale: 1.5,
+                    y: "0%",
+                    transition: {
+                      delay: 0.3,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 50,
+                    },
+                  }}
+                  exit={{ opacity: 0, x: "-20%", scale: 1.5, y: "90%" }}
+                  className="  absolute -z-10 top-[30%] w-[50vh] left-1/4 h-1/2 flex items-center justify-center  bg-gradient-to-t from-[#44308F80] via-[#44308F] to-[#44308F30]  blur-2xl  "
+                ></motion.div>
                 <div className=" absolute mix-blend-multiply z-20 w-full top-0 left-0 h-[100dvh] ">
                   <img
                     src={r2imagesurl + "/images/mb/character_mask.png"}
@@ -1273,6 +1291,24 @@ const Character: React.FC = () => {
                   className="w-full"
                 />
               </motion.div>
+              <motion.div
+                key={r2imagesurl + "/mbti/gradient/" + currentMbti + ".png"}
+                initial={{ opacity: 0, x: "-20%", scale: 1.5, y: "-30%" }}
+                animate={{
+                  opacity: 0.9,
+                  x: "-20%",
+                  scale: 1.5,
+                  y: "0%",
+                  transition: {
+                    delay: 0.3,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 50,
+                  },
+                }}
+                exit={{ opacity: 0, x: "-20%", scale: 1.5, y: "90%" }}
+                className="  absolute -z-10 top-[30%] w-[50vh] left-1/4 h-1/2 flex items-center justify-center  bg-gradient-to-t from-[#44308F80] via-[#44308F] to-[#44308F30]  blur-2xl  "
+              ></motion.div>
 
               <motion.div
                 key={

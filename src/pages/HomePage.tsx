@@ -255,7 +255,7 @@ const Home = () => {
             className="h-screen bg-cover bg-center bg-no-repeat z-0 w-full fixed"
             style={{
               backgroundImage: `url('${
-                r2imagesurl + "/images/mb/home_bg_mb.png"
+                IMAGE_URLS.ROG_GAMER_VISA + "imgs/home_bg_mb.png"
               }')`,
             }}
           ></motion.div>
@@ -517,7 +517,9 @@ const Home = () => {
             }}
             className="h-screen bg-cover bg-center bg-no-repeat z-0 w-full"
             style={{
-              backgroundImage: `url('${r2imagesurl + "/images/home_bg3.png"}')`,
+              backgroundImage: `url('${
+                IMAGE_URLS.ROG_GAMER_VISA + "imgs/home_bg.png"
+              }')`,
             }}
           ></motion.div>
           <img
