@@ -533,7 +533,6 @@ const Final: React.FC = () => {
       }
 
       const blob = await response.blob();
-      console.log(blob);
 
       const filesArray = [
         new File([blob], "share_gamer_card.jpg", {
@@ -544,13 +543,15 @@ const Final: React.FC = () => {
       const shareData = {
         files: filesArray,
       };
-      console.log(shareData);
 
       // 檢查是否為 Android 裝置
 
       // 執行分享
-      console.log("Web Share API is supported");
-      navigator.share({ text: "Check out this image!" });
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        toast.error("Web Share API not supported");
+      }
     } catch (error) {
       console.error("Error sharing image:", error);
       // 這裡可以觸發錯誤處理的 UI 更新
@@ -1033,7 +1034,7 @@ const Final: React.FC = () => {
                           : "opacity-80 brightness-100 "
                       } `}
                     >
-                      <div className="flex gap-[16%] mt-[4%] w-full justify-center ">
+                      <div className="flex gap-[16%] mt-[4%] w-full h-1/2 justify-center items-center  ">
                         {/* <div className=' flex items-center w-[12%] aspect-square' onClick={handleShare}><img src={r2imagesurl+'/images/ig.svg'} alt="" className='w-full ' /></div> */}
                         {!card3Url && card3Url.length === 0 && (
                           <div className=" flex items-center font-cachetpro">
@@ -1043,26 +1044,30 @@ const Final: React.FC = () => {
                         )}
                         {card3Url && card3Url.length > 0 && (
                           <div
-                            className=" flex items-center w-[10%] aspect-square"
+                            className=" flex items-center w-[20%] aspect-square  justify-center  "
                             onClick={handleShareX}
                           >
-                            <img
-                              src={r2gifurl + "/images/twitter.svg"}
-                              alt=""
-                              className="w-full"
-                            />
+                            <div>
+                              <img
+                                src={r2gifurl + "/images/twitter.svg"}
+                                alt=""
+                                className="w-full max-w-full object-contain"
+                              />
+                            </div>
                           </div>
                         )}
                         {card3Url && card3Url.length > 0 && (
                           <div
-                            className=" flex items-center w-[6%] aspect-square"
+                            className=" flex items-center w-[20%] aspect-square  justify-center "
                             onClick={() => handleShare(card3Url)}
                           >
-                            <img
-                              src={r2gifurl + "/images/fb.svg"}
-                              alt=""
-                              className="w-full"
-                            />
+                            <div className="">
+                              <img
+                                src={r2gifurl + "/images/fb.svg"}
+                                alt=""
+                                className="w-full max-w-full object-contain"
+                              />
+                            </div>
                           </div>
                         )}
                       </div>
