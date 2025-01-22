@@ -522,6 +522,7 @@ const Final: React.FC = () => {
   // };
 
   const handleShare = useCallback(async () => {
+    console.log(card3Url);
     try {
       if (!card3Url) {
         throw new Error("Image URL is missing");
@@ -558,7 +559,7 @@ const Final: React.FC = () => {
       console.error("Error sharing image:", error);
       // 這裡可以觸發錯誤處理的 UI 更新
     }
-  }, [card3Url]);
+  }, [card3Url, navigate]);
 
   //暫時無用
   const handleShareIg = async () => {
