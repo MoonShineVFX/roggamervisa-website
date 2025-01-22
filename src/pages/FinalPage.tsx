@@ -1072,7 +1072,9 @@ const Final: React.FC = () => {
                           <button
                             className="text-white bg-blue-500 p-2 rounded-md text-xl"
                             onClick={async () => {
-                              const response = await fetch(card3Url);
+                              const response = await fetch(
+                                "https://roggamervisa.moonshine-studio.net/upload/NO_00254_123_ACHT_card1737542431537.jpg"
+                              );
 
                               const blob = await response.blob();
 
