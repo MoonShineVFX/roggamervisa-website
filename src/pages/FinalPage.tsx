@@ -10,6 +10,7 @@ import {
 } from "../Helpers/Helper";
 import { QRCodeSVG } from "qrcode.react";
 import { IMAGE_URLS } from "../Helpers/constants";
+import { toast } from "react-toastify";
 interface ResultData {
   type: string;
   mbti: string;
@@ -529,7 +530,7 @@ const Final: React.FC = () => {
       // 获取图片数据
       const response = await fetch(card3Url);
       if (!response.ok) {
-        throw new Error(`Failed to fetch image: ${response.statusText}`);
+        toast.error("Failed to fetch image");
       }
 
       const blob = await response.blob();
@@ -537,13 +538,7 @@ const Final: React.FC = () => {
       // 檢查圖片大小 (10MB 限制)
       if (blob.size > 10 * 1024 * 1024) {
         // 10MB
-        throw new Error("Image is too large to share");
-      }
-
-      // 檢查支援的 MIME 類型
-      const supportedTypes = ["image/jpeg", "image/png", "image/gif"];
-      if (!supportedTypes.includes(blob.type)) {
-        throw new Error(`Unsupported image type: ${blob.type}`);
+        toast.error("Image size exceeds 10MB limit");
       }
 
       // 创建分享数据
@@ -637,7 +632,7 @@ const Final: React.FC = () => {
       // 获取图片数据
       const response = await fetch(card3Url);
       if (!response.ok) {
-        throw new Error("Failed to fetch image");
+        toast.error("Failed to fetch image");
       }
       const blob = await response.blob(); // 将响应数据转换为 Blob
 
