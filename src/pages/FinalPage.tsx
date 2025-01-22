@@ -521,15 +521,10 @@ const Final: React.FC = () => {
   //   // console.log('Uploaded image URL:', imageUrl);
   // };
 
-  const handleShare = useCallback(async () => {
-    console.log(card3Url);
+  const handleShare = useCallback(async (url: string) => {
     try {
-      if (!card3Url) {
-        throw new Error("Image URL is missing");
-      }
-
       // 获取图片数据
-      const response = await fetch(card3Url);
+      const response = await fetch(url);
       console.log(response);
       if (!response.ok) {
         toast.error("Failed to fetch image");
@@ -559,7 +554,7 @@ const Final: React.FC = () => {
       console.error("Error sharing image:", error);
       // 這裡可以觸發錯誤處理的 UI 更新
     }
-  }, [card3Url, navigate]);
+  }, []);
 
   //暫時無用
   const handleShareIg = async () => {
@@ -1060,7 +1055,7 @@ const Final: React.FC = () => {
                         {card3Url && card3Url.length > 0 && (
                           <div
                             className=" flex items-center w-[6%] aspect-square"
-                            onClick={handleShare}
+                            onClick={handleShare(card3Url)}
                           >
                             <img
                               src={r2gifurl + "/images/fb.svg"}
@@ -1068,33 +1063,6 @@ const Final: React.FC = () => {
                               className="w-full"
                             />
                           </div>
-                        )}
-                        {card3Url && card3Url.length > 0 && (
-                          <button
-                            className="text-white bg-blue-500 p-2 rounded-md text-xl"
-                            onClick={async () => {
-                              const response = await fetch(
-                                "https://roggamervisa.moonshine-studio.net/upload/NO_00254_123_ACHT_card1737542431537.jpg"
-                              );
-
-                              const blob = await response.blob();
-
-                              const filesArray = [
-                                new File([blob], "share_gamer_card.jpg", {
-                                  type: "image/jpeg",
-                                  lastModified: new Date().getTime(),
-                                }),
-                              ];
-                              const shareData = {
-                                files: filesArray,
-                              };
-                              if (navigator.share) {
-                                navigator.share(shareData);
-                              }
-                            }}
-                          >
-                            SHARE TEST
-                          </button>
                         )}
                       </div>
                     </div>
