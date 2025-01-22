@@ -1062,20 +1062,7 @@ const Final: React.FC = () => {
                         {card3Url && card3Url.length > 0 && (
                           <div
                             className=" flex items-center w-[20%] aspect-square  justify-center "
-                            onClick={() => handleShare(card3Url)}
-                          >
-                            <div className="">
-                              <img
-                                src={r2gifurl + "/images/fb.svg"}
-                                alt=""
-                                className="w-full max-w-full object-contain"
-                              />
-                            </div>
-                          </div>
-                        )}
-                        {card3Url && card3Url.length > 0 && (
-                          <button
-                            className="text-white bg-blue-500 p-2 rounded-md text-xl"
+                            // onClick={() => handleShare(card3Url)}
                             onClick={async () => {
                               if (navigator.share) {
                                 navigator
@@ -1089,6 +1076,33 @@ const Final: React.FC = () => {
                                   );
                               }
                             }}
+                          >
+                            <div className="">
+                              <img
+                                src={r2gifurl + "/images/fb.svg"}
+                                alt=""
+                                className="w-full max-w-full object-contain"
+                              />
+                            </div>
+                          </div>
+                        )}
+                        {card3Url && card3Url.length > 0 && (
+                          <button
+                            className="text-white bg-blue-500 p-2 rounded-md text-xl"
+                            onClick={() => handleShare(card3Url)}
+                            // onClick={async () => {
+                            //   if (navigator.share) {
+                            //     navigator
+                            //       .share({
+                            //         title: "標題2",
+                            //         text: "文字描述2",
+                            //       })
+                            //       .then(() => console.log("成功！"))
+                            //       .catch((error) =>
+                            //         console.log("發生錯誤", error)
+                            //       );
+                            //   }
+                            // }}
                           >
                             SHARE TEST
                           </button>
