@@ -545,7 +545,7 @@ const Final: React.FC = () => {
       // 檢查是否為 Android 裝置
 
       // 執行分享
-      if (navigator.share) {
+      if (navigator.share && navigator.canShare({ files: filesArray })) {
         await navigator.share({
           title: "Example Page",
           url: "https://example.com",
