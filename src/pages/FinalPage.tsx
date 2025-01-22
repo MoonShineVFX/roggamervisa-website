@@ -1064,12 +1064,21 @@ const Final: React.FC = () => {
                             className=" flex items-center w-[20%] aspect-square  justify-center "
                             // onClick={() => handleShare(card3Url)}
                             onClick={async () => {
+                              const response = await fetch(card3Url);
+
+                              const blob = await response.blob();
+                              const filesArray = [
+                                new File([blob], "share_gamer_card.jpg", {
+                                  type: "image/jpeg",
+                                  lastModified: new Date().getTime(),
+                                }),
+                              ];
+                              const shareData = {
+                                files: filesArray,
+                              };
                               if (navigator.share) {
                                 navigator
-                                  .share({
-                                    title: "標題2",
-                                    text: "文字描述2",
-                                  })
+                                  .share(shareData)
                                   .then(() => console.log("成功！"))
                                   .catch((error) =>
                                     console.log("發生錯誤", error)
