@@ -549,12 +549,8 @@ const Final: React.FC = () => {
       // 檢查是否為 Android 裝置
 
       // 執行分享
-      if (navigator.share) {
-        console.log("Web Share API is supported");
-        await navigator.share({ text: "Check out this image!" });
-      } else {
-        toast.error("Web Share API not supported");
-      }
+      console.log("Web Share API is supported");
+      navigator.share({ text: "Check out this image!" });
     } catch (error) {
       console.error("Error sharing image:", error);
       // 這裡可以觸發錯誤處理的 UI 更新
