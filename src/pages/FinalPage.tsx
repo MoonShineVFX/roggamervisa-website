@@ -529,6 +529,7 @@ const Final: React.FC = () => {
 
       // 获取图片数据
       const response = await fetch(card3Url);
+      console.log(response);
       if (!response.ok) {
         toast.error("Failed to fetch image");
       }
@@ -557,7 +558,6 @@ const Final: React.FC = () => {
       // 執行分享
       if (navigator.share) {
         await navigator.share(shareData);
-        toast("Image shared successfully");
       } else {
         toast.error("Web Share API not supported");
       }
@@ -1075,6 +1075,25 @@ const Final: React.FC = () => {
                             />
                           </div>
                         )}
+                        <button
+                          className="text-white bg-blue-500 p-2 rounded-md text-xl"
+                          onClick={() => {
+                            if (navigator.share) {
+                              navigator
+                                .share({
+                                  title: "標題",
+                                  text: "文字描述",
+                                  url: "https://google.com/",
+                                })
+                                .then(() => console.log("成功！"))
+                                .catch((error) =>
+                                  console.log("發生錯誤", error)
+                                );
+                            }
+                          }}
+                        >
+                          SHARE TEST
+                        </button>
                       </div>
                     </div>
                   </motion.div>
