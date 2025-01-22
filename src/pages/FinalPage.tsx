@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 // import { useImage } from "../Helpers/ImageContext";
@@ -521,8 +521,7 @@ const Final: React.FC = () => {
   //   // console.log('Uploaded image URL:', imageUrl);
   // };
 
-  const handleShare = async () => {
-    console.log(card3Url);
+  const handleShare = useCallback(async () => {
     try {
       if (!card3Url) {
         throw new Error("Image URL is missing");
@@ -559,7 +558,7 @@ const Final: React.FC = () => {
       console.error("Error sharing image:", error);
       // 這裡可以觸發錯誤處理的 UI 更新
     }
-  };
+  }, [card3Url]);
 
   //暫時無用
   const handleShareIg = async () => {
