@@ -522,6 +522,7 @@ const Final: React.FC = () => {
   // };
 
   const handleShare = async () => {
+    console.log(card3Url);
     try {
       if (!card3Url) {
         throw new Error("Image URL is missing");
