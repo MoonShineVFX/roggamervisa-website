@@ -524,8 +524,10 @@ const Final: React.FC = () => {
   const handleShare = useCallback(async (url: string) => {
     try {
       // 获取图片数据
-      const response = await fetch(url);
-      console.log(response);
+      const response = await fetch(
+        "https://roggamervisa.moonshine-studio.net/upload/NO_00263_123_ACHT_card1737545159969.jpg"
+      );
+      console.log(url);
       if (!response.ok) {
         toast.error("Failed to fetch image");
       }
