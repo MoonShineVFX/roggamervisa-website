@@ -1516,7 +1516,7 @@ const Final: React.FC = () => {
                       ) : (
                         <div className="w-full aspect-square flex justify-center items-end font-cachetpro">
                           <div className="text-[1vw] text-white/50 mx-auto">
-                            Waiting for processing
+                            Generate QR code after downloading.
                           </div>
                         </div>
                       )}
