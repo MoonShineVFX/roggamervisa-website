@@ -1073,6 +1073,26 @@ const Final: React.FC = () => {
                             </div>
                           </div>
                         )}
+                        {card3Url && card3Url.length > 0 && (
+                          <button
+                            className="text-white bg-blue-500 p-2 rounded-md text-xl"
+                            onClick={async () => {
+                              if (navigator.share) {
+                                navigator
+                                  .share({
+                                    title: "標題2",
+                                    text: "文字描述2",
+                                  })
+                                  .then(() => console.log("成功！"))
+                                  .catch((error) =>
+                                    console.log("發生錯誤", error)
+                                  );
+                              }
+                            }}
+                          >
+                            SHARE TEST
+                          </button>
+                        )}
                       </div>
                     </div>
                   </motion.div>
