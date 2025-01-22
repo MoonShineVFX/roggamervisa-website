@@ -525,7 +525,7 @@ const Final: React.FC = () => {
     try {
       // 获取图片数据
       const response = await fetch(
-        "https://roggamervisa.moonshine-studio.net/upload/NO_00263_123_ACHT_card1737545159969.jpg"
+        url ? url : card3Url ? card3Url : resultData.result
       );
       console.log(url);
       if (!response.ok) {
