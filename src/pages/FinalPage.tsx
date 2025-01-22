@@ -536,21 +536,14 @@ const Final: React.FC = () => {
 
       const blob = await response.blob();
 
-      // 檢查圖片大小 (10MB 限制)
-      if (blob.size > 10 * 1024 * 1024) {
-        // 10MB
-        toast.error("Image size exceeds 10MB limit");
-      }
-
-      // 创建分享数据
+      const filesArray = [
+        new File([blob], "share_gamer_card.jpg", {
+          type: "image/jpeg",
+          lastModified: new Date().getTime(),
+        }),
+      ];
       const shareData = {
-        files: [
-          new File([blob], "image.jpg", {
-            type: blob.type,
-          }),
-        ],
-        title: "Share Image",
-        text: "Check out this image!",
+        files: filesArray,
       };
 
       // 檢查是否為 Android 裝置
