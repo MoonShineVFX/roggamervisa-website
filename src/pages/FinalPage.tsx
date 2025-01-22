@@ -556,32 +556,10 @@ const Final: React.FC = () => {
 
       // 執行分享
       if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-          console.log("Image shared successfully");
-        } catch (error) {
-          // 如果分享失敗，改用下載方式
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "image.jpg";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          console.log("Share failed, image downloaded instead");
-        }
+        await navigator.share(shareData);
+        toast("Image shared successfully");
       } else {
-        // 不支援 Web Share API 的裝置
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "image.jpg";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        console.log("Web Share API not supported, image downloaded");
+        toast.error("Web Share API not supported");
       }
     } catch (error) {
       console.error("Error sharing image:", error);
