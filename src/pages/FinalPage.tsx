@@ -1071,18 +1071,22 @@ const Final: React.FC = () => {
                         {card3Url && card3Url.length > 0 && (
                           <button
                             className="text-white bg-blue-500 p-2 rounded-md text-xl"
-                            onClick={() => {
+                            onClick={async () => {
+                              const response = await fetch(card3Url);
+
+                              const blob = await response.blob();
+
+                              const filesArray = [
+                                new File([blob], "share_gamer_card.jpg", {
+                                  type: "image/jpeg",
+                                  lastModified: new Date().getTime(),
+                                }),
+                              ];
+                              const shareData = {
+                                files: filesArray,
+                              };
                               if (navigator.share) {
-                                navigator
-                                  .share({
-                                    title: "標題2",
-                                    text: "文字描述2",
-                                    url: card3Url,
-                                  })
-                                  .then(() => console.log("成功！"))
-                                  .catch((error) =>
-                                    console.log("發生錯誤", error)
-                                  );
+                                navigator.share(shareData);
                               }
                             }}
                           >
