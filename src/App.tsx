@@ -8,6 +8,7 @@ import CharacterPage from "./pages/CharacterPage";
 import CameraPage from "./pages/CameraPage";
 import FinalPage from "./pages/FinalPage";
 import { AnimatePresence, motion } from "framer-motion";
+import MobileQrPage from "./pages/MobileQrPage";
 
 function App() {
   return (
@@ -50,6 +51,14 @@ function App() {
           element={
             <AnimatePage>
               <FinalPage />
+            </AnimatePage>
+          }
+        />
+        <Route
+          path="/qr"
+          element={
+            <AnimatePage>
+              <MobileQrPage />
             </AnimatePage>
           }
         />
