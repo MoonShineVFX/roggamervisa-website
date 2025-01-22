@@ -1075,7 +1075,7 @@ const Final: React.FC = () => {
                             />
                           </div>
                         )}
-                        <button
+                        {/* <button
                           className="text-white bg-blue-500 p-2 rounded-md text-xl"
                           onClick={() => {
                             if (navigator.share) {
@@ -1093,7 +1093,7 @@ const Final: React.FC = () => {
                           }}
                         >
                           SHARE TEST
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </motion.div>
@@ -1533,8 +1533,8 @@ const Final: React.FC = () => {
                           />
                         </div>
                       ) : (
-                        <div className="w-full aspect-square flex justify-center items-end font-cachetpro">
-                          <div className="text-[1vw] text-white/50 mx-auto">
+                        <div className="w-full aspect-square flex justify-center items-center font-cachetpro">
+                          <div className="text-[1vw] text-white/50 mx-auto text-left">
                             Generate QR code after downloading.
                           </div>
                         </div>
