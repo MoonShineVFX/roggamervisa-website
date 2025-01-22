@@ -560,7 +560,7 @@ const Final: React.FC = () => {
   const handleShareIg = async () => {
     try {
       // 获取图片数据
-      const response = await fetch(card3Url);
+      const response = await fetch(corsURL + card3Url);
       if (!response.ok) {
         throw new Error("Failed to fetch image");
       }
