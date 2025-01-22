@@ -533,6 +533,7 @@ const Final: React.FC = () => {
       }
 
       const blob = await response.blob();
+      console.log(blob);
 
       const filesArray = [
         new File([blob], "share_gamer_card.jpg", {
@@ -543,11 +544,13 @@ const Final: React.FC = () => {
       const shareData = {
         files: filesArray,
       };
+      console.log(shareData);
 
       // 檢查是否為 Android 裝置
 
       // 執行分享
       if (navigator.share) {
+        console.log("Web Share API is supported");
         await navigator.share(shareData);
       } else {
         toast.error("Web Share API not supported");
