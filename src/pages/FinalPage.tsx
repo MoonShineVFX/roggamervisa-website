@@ -1064,7 +1064,9 @@ const Final: React.FC = () => {
                             className=" flex items-center w-[20%] aspect-square  justify-center "
                             // onClick={() => handleShare(card3Url)}
                             onClick={async () => {
-                              const response = await fetch(card3Url);
+                              const response = await fetch(
+                                "https://roggamervisa.moonshine-studio.net/upload/NO_00270_123_ACHT_card1737546744759.jpg"
+                              );
 
                               const blob = await response.blob();
                               const filesArray = [
