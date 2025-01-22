@@ -434,17 +434,11 @@ const Team: React.FC = () => {
                   }}
                   className=" bg-black w-full h-[180px] py-[2%]  border-y border-white/50 absolute top-0 left-0 z-10  "
                 >
-                  <div className="text-[3.6vw] relative font-robotocon text-white/60  bg-no-repeat  w-[50%] aspect-[210/154] bg-fuchsia-400/0 mx-auto bg-contain flex justify-center     text-balance  ">
-                    <div className="w-full">
-                      <img
-                        src={r2imagesurl + "/images/mb/character_hint_bg.png"}
-                        alt=""
-                      />
+                  <div className="text-[3.6vw] relative font-robotocon text-white/60  bg-no-repeat  w-[100%] bg-fuchsia-400/0 mx-auto bg-contain flex flex-col justify-between  items-center  py-8 h-full  ">
+                    <div className="w-full  px-4  text-center text-lg animate-pulse">
+                      請選擇先前意識比對的結果啟動潛行。
                     </div>
-                    <div className=" absolute top-0 px-4 py-2">
-                      請選擇先前意識比對的結果啟動潛行
-                    </div>
-                    <div className=" flex gap-4 absolute -bottom-2 w-11/12 left-1/2 -translate-x-1/2 justify-center mx-auto  ">
+                    <div className=" flex gap-4  w-full   justify-center items-center mx-auto pt-[5%] ">
                       <div onClick={handleClickMbHint}>
                         <img
                           src={

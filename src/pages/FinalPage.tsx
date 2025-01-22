@@ -207,7 +207,7 @@ const Final: React.FC = () => {
         "20",
         card.fontcolor,
         0,
-        { x: 46, y: 1010 },
+        { x: 46, y: 1004 },
         getUsernameFromCookie() as string,
         "ROGFonts",
         "20",
@@ -293,7 +293,7 @@ const Final: React.FC = () => {
         "20",
         card.fontcolor,
         0,
-        { x: 46, y: 1010 },
+        { x: 46, y: 1004 },
         getUsernameFromCookie() as string,
         "ROGFonts",
         "20",
@@ -1072,6 +1072,12 @@ const Final: React.FC = () => {
                     >
                       <div className="flex gap-[16%] mt-[4%] w-full justify-center ">
                         {/* <div className=' flex items-center w-[12%] aspect-square' onClick={handleShare}><img src={r2imagesurl+'/images/ig.svg'} alt="" className='w-full ' /></div> */}
+                        {!card3Url && card3Url.length === 0 && (
+                          <div className=" flex items-center font-cachetpro">
+                            The Share function will be available after you
+                            download your Gamer Card.
+                          </div>
+                        )}
                         {card3Url && card3Url.length > 0 && (
                           <div
                             className=" flex items-center w-[10%] aspect-square"
