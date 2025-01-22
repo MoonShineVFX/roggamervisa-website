@@ -1082,9 +1082,9 @@ const Final: React.FC = () => {
                               if (navigator.share) {
                                 navigator
                                   .share({
-                                    title: "標題",
-                                    text: "文字描述",
-                                    url: "https://google.com/",
+                                    title: "標題2",
+                                    text: "文字描述2",
+                                    url: card3Url,
                                   })
                                   .then(() => console.log("成功！"))
                                   .catch((error) =>
