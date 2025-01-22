@@ -551,7 +551,7 @@ const Final: React.FC = () => {
       // 執行分享
       if (navigator.share) {
         console.log("Web Share API is supported");
-        await navigator.share(shareData);
+        await navigator.share({ text: "Check out this image!" });
       } else {
         toast.error("Web Share API not supported");
       }
