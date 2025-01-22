@@ -1055,7 +1055,7 @@ const Final: React.FC = () => {
                         {card3Url && card3Url.length > 0 && (
                           <div
                             className=" flex items-center w-[6%] aspect-square"
-                            onClick={handleShare(card3Url)}
+                            onClick={() => handleShare(card3Url)}
                           >
                             <img
                               src={r2gifurl + "/images/fb.svg"}
