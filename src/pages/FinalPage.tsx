@@ -520,11 +520,11 @@ const Final: React.FC = () => {
   //   // const imageUrl = await uploadImageToR2(base64Image);
   //   // console.log('Uploaded image URL:', imageUrl);
   // };
-
+  let corsURL = "https://mscors-anywhwere.kilokingw.workers.dev/?";
   const handleShare = useCallback(async (url: string) => {
     try {
       // 获取图片数据
-      const response = await fetch(encodeURI(url));
+      const response = await fetch(corsURL + url);
       console.log(url);
       if (!response.ok) {
         toast.error("Failed to fetch image");
