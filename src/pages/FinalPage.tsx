@@ -1075,25 +1075,27 @@ const Final: React.FC = () => {
                             />
                           </div>
                         )}
-                        {/* <button
-                          className="text-white bg-blue-500 p-2 rounded-md text-xl"
-                          onClick={() => {
-                            if (navigator.share) {
-                              navigator
-                                .share({
-                                  title: "標題",
-                                  text: "文字描述",
-                                  url: "https://google.com/",
-                                })
-                                .then(() => console.log("成功！"))
-                                .catch((error) =>
-                                  console.log("發生錯誤", error)
-                                );
-                            }
-                          }}
-                        >
-                          SHARE TEST
-                        </button> */}
+                        {card3Url && card3Url.length > 0 && (
+                          <button
+                            className="text-white bg-blue-500 p-2 rounded-md text-xl"
+                            onClick={() => {
+                              if (navigator.share) {
+                                navigator
+                                  .share({
+                                    title: "標題",
+                                    text: "文字描述",
+                                    url: "https://google.com/",
+                                  })
+                                  .then(() => console.log("成功！"))
+                                  .catch((error) =>
+                                    console.log("發生錯誤", error)
+                                  );
+                              }
+                            }}
+                          >
+                            SHARE TEST
+                          </button>
+                        )}
                       </div>
                     </div>
                   </motion.div>
