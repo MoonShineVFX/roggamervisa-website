@@ -546,10 +546,7 @@ const Final: React.FC = () => {
 
       // 執行分享
       if (navigator.share && navigator.canShare({ files: filesArray })) {
-        await navigator.share({
-          title: "Example Page",
-          url: "https://example.com",
-        });
+        await navigator.share(shareData);
       } else {
         toast.error("Web Share API not supported");
       }
