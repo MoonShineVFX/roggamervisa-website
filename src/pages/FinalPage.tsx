@@ -543,12 +543,15 @@ const Final: React.FC = () => {
       const shareData = {
         files: filesArray,
       };
-
+      console.log(shareData);
       // 檢查是否為 Android 裝置
 
       // 執行分享
       if (navigator.share) {
-        await navigator.share(shareData);
+        await navigator.share({
+          title: "Example Page",
+          url: "https://example.com",
+        });
       } else {
         toast.error("Web Share API not supported");
       }
