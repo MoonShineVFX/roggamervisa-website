@@ -5,7 +5,7 @@ import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <div className="fixed inset-0 bg-black z-[9999]" />
+    <div className="fixed inset-0 bg-black z-[9999] " />
     <App />
   </StrictMode>
 );
